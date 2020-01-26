@@ -1,0 +1,25 @@
+{
+  "name": "azinth-editor",
+  "version": "0.1.0",
+  "description": "Editor for the Azinth keyboard remapping tool.",
+  "main": "index.js",
+  "author": "Rafael Kenji Takahashi",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "webpack --config ./webpack.config.js",
+    "start": "electron dist/electron.js"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "electron": "^7.1.10",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
