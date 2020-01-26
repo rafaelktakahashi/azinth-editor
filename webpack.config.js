@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = [
   {
@@ -34,6 +35,9 @@ module.exports = [
           use: [{ loader: "ts-loader" }]
         }
       ]
+    },
+    resolve: {
+      extensions: [".js", ".ts", ".tsx"]
     },
     output: {
       path: __dirname + "/dist",
