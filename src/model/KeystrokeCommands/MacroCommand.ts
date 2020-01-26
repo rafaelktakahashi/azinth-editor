@@ -1,4 +1,5 @@
 import KeystrokeCommand from "../KeystrokeCommand";
+import Scancode from "../Scancode";
 
 export interface VirtualKeypress {
   type: "make" | "break";
@@ -6,8 +7,14 @@ export interface VirtualKeypress {
   vKey: number;
 }
 
-export default interface MacroCommand extends KeystrokeCommand {
+export default class MacroCommand implements KeystrokeCommand {
+  constructor(scancode: Scancode, keypresses: VirtualKeypress[]) {
+    this.type = "macro";
+    this.scancode = scancode;
+    this.keypresses = keypresses;
+  }
   type: "macro";
+  scancode: Scancode;
   triggerOnRepeat: boolean;
   keypresses: VirtualKeypress[];
 }

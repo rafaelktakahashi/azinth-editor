@@ -7,6 +7,7 @@ declare type Scancode = string;
 
 /**
  * This file doesn't do much, since we can't enforce anything about the scancode
- * type other than it being a string.
+ * type other than it being a string. Typing variables with this is for purely
+ * semantic reasons.
  */
 export default Scancode;

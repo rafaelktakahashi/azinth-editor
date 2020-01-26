@@ -1,8 +1,9 @@
 import KeystrokeCommand from "../KeystrokeCommand";
+import Scancode from "../Scancode";
 
 export default class UnicodeCommand implements KeystrokeCommand {
   constructor(
-    scancode: string,
+    scancode: Scancode,
     codepoints: number[],
     triggerOnRepeat: boolean
   ) {
@@ -12,7 +13,7 @@ export default class UnicodeCommand implements KeystrokeCommand {
     this.triggerOnRepeat = triggerOnRepeat;
   }
   type: "unicode";
-  scancode: string;
+  scancode: Scancode;
   triggerOnRepeat: boolean;
   /**
    * Each codepoint is a 32-bit unsigned integer.

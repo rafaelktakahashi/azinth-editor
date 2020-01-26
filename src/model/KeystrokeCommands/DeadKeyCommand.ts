@@ -1,4 +1,5 @@
 import KeystrokeCommand from "../KeystrokeCommand";
+import Scancode from "../Scancode";
 
 /**
  * Represents one dead key replacement.
@@ -8,7 +9,19 @@ export interface Replacement {
   to: number[];
 }
 
-export default interface DeadKeyCommand extends KeystrokeCommand {
+export default class DeadKeyCommand implements KeystrokeCommand {
+  constructor(
+    scancode: Scancode,
+    codepoints: number[],
+    replacements: Replacement[],
+    triggerOnRepeat: boolean
+  ) {
+    this.type = "deadkey";
+    this.scancode = scancode;
+    this.codepoints = codepoints;
+    this.replacements = replacements;
+    this.triggerOnRepeat = triggerOnRepeat;
+  }
   type: "deadkey";
   scancode: string;
   triggerOnRepeat: boolean;
