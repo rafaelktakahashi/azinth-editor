@@ -18,9 +18,8 @@ export default class Key extends React.Component<KeyProps> {
         style={{
           width: UNIT_LENGTH,
           height: UNIT_LENGTH,
+          border: "2px solid black",
           backgroundColor: "#d8d8d8",
-          borderColor: "#606060",
-          borderWidth: 5,
           borderRadius: 4,
           alignItems: "center",
           justifyItems: "center"
@@ -29,6 +28,7 @@ export default class Key extends React.Component<KeyProps> {
         <p
           style={{
             textAlign: "center",
+            verticalAlign: "center",
             fontFamily: "Trebuchet MS"
           }}
         >
