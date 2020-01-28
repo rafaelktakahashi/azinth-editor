@@ -10,7 +10,13 @@ const Index = () => {
     [45, 45, 45],
     true
   );
-  return <Key keyCommand={keyCommand} />;
+  return (
+    <div>
+      <Key keyCommand={keyCommand} bottomLabel="Top" />
+      <Key keyCommand={keyCommand} width={1.5} bottomLabel="Charm" />
+      <Key keyCommand={keyCommand} height={2} bottomLabel="Strange" />
+    </div>
+  );
 };
 
 ReactDOM.render(<Index />, document.getElementById("app"));
