@@ -7,7 +7,7 @@ const Headerbar = styled.header`
   position: fixed;
   height: 32px;
   width: calc(100% - 2px); /*Compensate for body 1px border*/
-  background: #254053;
+  background: #e0e0e0;
 `;
 
 const DragRegion = styled.header`
@@ -23,7 +23,7 @@ const Main = styled.div`
   margin-top: 32px;
   padding: 20px;
   overflow-y: auto;
-  background-color: white;
+  background-color: #e0e0e0;
 `;
 
 const Title = styled.span`
@@ -94,31 +94,59 @@ interface Props {
   title: string;
   children: JSX.Element[];
 }
-export default (props: Props): JSX.Element => {
-  const win = remote.getCurrentWindow();
 
-  return (
-    <>
-      <Headerbar>
-        <DragRegion>
-          <Title>
-            <span>{props.title}</span>
-          </Title>
-        </DragRegion>
-        <HeaderButtonContainer>
-          <HeaderButtonMin>
-            <span>{"\uE921"}</span>
-          </HeaderButtonMin>
-          <HeaderButtonMaxRestore>
-            <span>{win.isMaximized ? "\uE922" : "\uE923"}</span>
-          </HeaderButtonMaxRestore>
-          <HeaderButtonClose>
-            <span>{"\uE8BB"}</span>
-          </HeaderButtonClose>
-        </HeaderButtonContainer>
-      </Headerbar>
+class Titlebar extends React.Component<Props> {
+  componentDidMount() {
+    remote.getCurrentWindow().addListener("maximize", () => this.forceUpdate());
+    remote
+      .getCurrentWindow()
+      .addListener("unmaximize", () => this.forceUpdate());
+  }
+  render() {
+    const isMaximized = remote.getCurrentWindow().isMaximized();
+    return (
+      <>
+        <Headerbar>
+          <DragRegion>
+            <Title>
+              <span>{this.props.title}</span>
+            </Title>
+          </DragRegion>
+          <HeaderButtonContainer>
+            <HeaderButtonMin
+              onClick={() => remote.getCurrentWindow().minimize()}
+            >
+              <span>{"\uE921"}</span>
+            </HeaderButtonMin>
 
-      <Main>{props.children}</Main>
-    </>
-  );
-};
+            {!isMaximized && (
+              <HeaderButtonMaxRestore
+                onClick={() => remote.getCurrentWindow().maximize()}
+              >
+                <span>{"\uE922"}</span>
+              </HeaderButtonMaxRestore>
+            )}
+
+            {isMaximized && (
+              <HeaderButtonMaxRestore
+                onClick={() => remote.getCurrentWindow().unmaximize()}
+              >
+                <span>{"\uE923"}</span>
+              </HeaderButtonMaxRestore>
+            )}
+
+            <HeaderButtonClose
+              onClick={() => remote.getCurrentWindow().close()}
+            >
+              <span>{"\uE8BB"}</span>
+            </HeaderButtonClose>
+          </HeaderButtonContainer>
+        </Headerbar>
+
+        <Main>{this.props.children}</Main>
+      </>
+    );
+  }
+}
+
+export default Titlebar;

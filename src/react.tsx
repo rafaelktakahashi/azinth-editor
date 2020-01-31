@@ -13,11 +13,11 @@ const Index = () => {
     true
   );
   return (
-    <>
+    <Titlebar title="Azinth editor">
       <Key keyCommand={keyCommand} bottomLabel="Top" />
       <Key keyCommand={keyCommand} width={1.5} bottomLabel="Charm" />
       <Key keyCommand={keyCommand} height={2} bottomLabel="Strange" />
-    </>
+    </Titlebar>
   );
 };
 
