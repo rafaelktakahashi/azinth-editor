@@ -28,8 +28,10 @@ const MenuButton = styled.div`
 
 export default class Menubar extends React.Component<{}> {
   state = {
-    editMenuRef: null
+    activeMenuRef: null,
+    activeMenu: ""
   };
+  fileRef: any;
   editRef: any;
 
   render(): JSX.Element {
@@ -37,26 +39,41 @@ export default class Menubar extends React.Component<{}> {
       <Container>
         <MenuButton
           ref={r => {
-            this.editRef = r;
+            this.fileRef = r;
           }}
           onClick={() =>
             this.setState({
-              editMenuRef: this.editRef.current
+              activeMenuRef: this.fileRef.current,
+              activeMenu: "file-menu"
+            })
+          }
+        >
+          <span>File</span>
+        </MenuButton>
+        <MenuButton
+          ref={r => {
+            this.editRef;
+          }}
+          onClick={() =>
+            this.setState({
+              activeMenuRef: this.editRef.current,
+              activeMenu: "edit-menu"
             })
           }
         >
           <span>Edit</span>
         </MenuButton>
         <MenuButton>
-          <span>Menu2</span>
+          <span>View</span>
         </MenuButton>
         <MenuButton>
-          <span>Menu3</span>
+          <span>About</span>
         </MenuButton>
         <Menu
-          anchorEl={this.state.editMenuRef}
+          id="file-menu"
+          anchorEl={this.state.activeMenuRef}
           keepMounted
-          open={Boolean(this.state.editMenuRef)}
+          open={"file-menu".localeCompare(this.state.activeMenu) === 0}
           onClose={() => {
             this.setState({ editMenuRef: null });
           }}

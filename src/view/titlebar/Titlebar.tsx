@@ -22,7 +22,7 @@ const DragRegion = styled.header`
 `;
 
 const Main = styled.div`
-  height: calc(100% - 32px);
+  height: 100%;
   margin-top: 32px;
   padding: 20px;
   overflow-y: auto;
