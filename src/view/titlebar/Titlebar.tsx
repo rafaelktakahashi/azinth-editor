@@ -1,13 +1,14 @@
 import * as React from "react";
 import styled from "styled-components";
 import { remote } from "electron";
+import Menubar from "./Menubar";
 
 const Headerbar = styled.header`
   display: block;
   position: fixed;
   height: 32px;
   width: calc(100% - 2px); /*Compensate for body 1px border*/
-  background: #e0e0e0;
+  background: #e8e8e8;
 `;
 
 const DragRegion = styled.header`
@@ -15,6 +16,8 @@ const DragRegion = styled.header`
   height: 100%;
   display: grid;
   grid-template-columns: auto 138px;
+  display: flex;
+  flex-direction: row;
   -webkit-app-region: drag;
 `;
 
@@ -23,21 +26,24 @@ const Main = styled.div`
   margin-top: 32px;
   padding: 20px;
   overflow-y: auto;
-  background-color: #e0e0e0;
+  background-color: #e8e8e8;
 `;
 
 const Title = styled.span`
   grid-column: 1;
   display: flex;
+  margin: 0 auto;
   align-items: center;
   margin-left: 8px;
   overflow-x: hidden;
   font-family: "Segoe UI", sans-serif;
   font-size: 12px;
-  .span {
+  font-weight: 600;
+  & span {
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.5;
+    user-select: none;
   }
 `;
 
@@ -62,10 +68,10 @@ const HeaderButton = styled.div`
   user-select: none;
   cursor: default;
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
   }
   &:active {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
   }
 `;
 const HeaderButtonMin = styled(HeaderButton)`
@@ -108,6 +114,7 @@ class Titlebar extends React.Component<Props> {
       <>
         <Headerbar>
           <DragRegion>
+            <Menubar />
             <Title>
               <span>{this.props.title}</span>
             </Title>
