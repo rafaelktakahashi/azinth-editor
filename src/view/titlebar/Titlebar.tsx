@@ -98,7 +98,7 @@ const HeaderButtonClose = styled(HeaderButton)`
 
 interface Props {
   title: string;
-  children: JSX.Element[];
+  children: JSX.Element | JSX.Element[];
 }
 
 class Titlebar extends React.Component<Props> {

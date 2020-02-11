@@ -1,5 +1,5 @@
 import * as React from "react";
-import KeystrokeCommand from "../model/KeystrokeCommand";
+import KeystrokeCommand from "../../model/KeystrokeCommand";
 
 // This length is not configurable, unfortunately.
 const UNIT_LENGTH = 35;
@@ -10,7 +10,11 @@ interface Props {
   width: number;
   /** Height of this key, in units. Has no effect on non-rectangular keys. */
   height: number;
-  keyCommand: KeystrokeCommand;
+  /** Horizontal offset in relation to this component's parent. */
+  xOffset: number;
+  /** Vertical offset in relation to this component's parent. */
+  yOffset: number;
+  keyCommand?: KeystrokeCommand;
   bottomLabel: string;
 }
 
@@ -31,7 +35,9 @@ export default class Key extends React.Component<Props> {
       <div
         id="keycap-border"
         style={{
-          position: "relative",
+          position: "absolute",
+          left: UNIT_LENGTH * this.props.xOffset,
+          top: UNIT_LENGTH * this.props.yOffset,
           flex: 1,
           padding: "1px",
           width: UNIT_LENGTH * this.props.width,
@@ -72,7 +78,7 @@ export default class Key extends React.Component<Props> {
                 textAlign: "center"
               }}
             >
-              {this.props.keyCommand.scancode}
+              {this.props.keyCommand?.scancode || ""}
             </p>
             <p
               style={{

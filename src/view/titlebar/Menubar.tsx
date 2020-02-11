@@ -37,7 +37,7 @@ export default class Menubar extends React.Component<{}> {
     this.setState({
       activeMenuRef: null,
       activeMenu: ""
-    })
+    });
   }
 
   isOpen(menuName: string): boolean {
@@ -58,7 +58,7 @@ export default class Menubar extends React.Component<{}> {
     return (
       <Container>
         <MenuButton
-          onClick={(event) =>
+          onClick={event =>
             this.setState({
               activeMenuRef: event.currentTarget,
               activeMenu: "file-menu"
@@ -68,7 +68,7 @@ export default class Menubar extends React.Component<{}> {
           <span>File</span>
         </MenuButton>
         <MenuButton
-          onClick={(event) =>
+          onClick={event =>
             this.setState({
               activeMenuRef: event.currentTarget,
               activeMenu: "edit-menu"
@@ -78,7 +78,7 @@ export default class Menubar extends React.Component<{}> {
           <span>Edit</span>
         </MenuButton>
         <MenuButton
-          onClick={(event) =>
+          onClick={event =>
             this.setState({
               activeMenuRef: event.currentTarget,
               activeMenu: "view-menu"
@@ -88,7 +88,7 @@ export default class Menubar extends React.Component<{}> {
           <span>View</span>
         </MenuButton>
         <MenuButton
-          onClick={(event) =>
+          onClick={event =>
             this.setState({
               activeMenuRef: event.currentTarget,
               activeMenu: "about-menu"
@@ -127,7 +127,9 @@ export default class Menubar extends React.Component<{}> {
           onClose={this.closeMenu.bind(this)}
         >
           <MenuItem onClick={this.listenerZoomIn.bind(this)}>Zoom In</MenuItem>
-          <MenuItem onClick={this.listenerZoomOut.bind(this)}>Zoom Out</MenuItem>
+          <MenuItem onClick={this.listenerZoomOut.bind(this)}>
+            Zoom Out
+          </MenuItem>
         </Menu>
 
         <Menu
