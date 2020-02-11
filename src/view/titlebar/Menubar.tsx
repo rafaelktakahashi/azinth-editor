@@ -1,4 +1,5 @@
 import * as React from "react";
+import { webFrame } from "electron";
 import styled from "styled-components";
 import Menu from "@material-ui/core/Menu";
 import { MenuItem } from "@material-ui/core";
@@ -41,6 +42,16 @@ export default class Menubar extends React.Component<{}> {
 
   isOpen(menuName: string): boolean {
     return (menuName || "").localeCompare(this.state.activeMenu) === 0;
+  }
+
+  listenerZoomIn() {
+    webFrame.setZoomLevel(webFrame.getZoomLevel() + 1);
+    this.closeMenu();
+  }
+
+  listenerZoomOut() {
+    webFrame.setZoomLevel(webFrame.getZoomLevel() - 1);
+    this.closeMenu();
   }
 
   render(): JSX.Element {
@@ -115,8 +126,8 @@ export default class Menubar extends React.Component<{}> {
           open={this.isOpen("view-menu")}
           onClose={this.closeMenu.bind(this)}
         >
-          <MenuItem>Zoom In</MenuItem>
-          <MenuItem>Zoom Out</MenuItem>
+          <MenuItem onClick={this.listenerZoomIn.bind(this)}>Zoom In</MenuItem>
+          <MenuItem onClick={this.listenerZoomOut.bind(this)}>Zoom Out</MenuItem>
         </Menu>
 
         <Menu
