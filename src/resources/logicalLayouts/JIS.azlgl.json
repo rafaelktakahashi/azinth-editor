@@ -76,7 +76,7 @@
     { "scancode": "7b", "label": "無変換" },
     { "scancode": "39", "label": "" },
     { "scancode": "79", "label": "変換" },
-    { "scancode": "70", "label": "ローマ字" },
+    { "scancode": "70", "label": "ﾛｰﾏ字" },
     { "scancode": "e0:38", "label": "Alt" },
     { "scancode": "e0:5c", "label": "Win" },
     { "scancode": "e0:5d", "label": "Menu" },

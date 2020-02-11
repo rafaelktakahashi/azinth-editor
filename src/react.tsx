@@ -6,7 +6,7 @@ import Titlebar from "./view/titlebar/Titlebar";
 const Index = () => {
   return (
     <Titlebar title="Azinth editor">
-      <Layer logicalLayout="US-ANSI" physicalLayout="ANSI" />
+      <Layer logicalLayout="JIS" physicalLayout="JIS" />
     </Titlebar>
   );
 };

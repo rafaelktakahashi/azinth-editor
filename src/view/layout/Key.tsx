@@ -69,14 +69,17 @@ export default class Key extends React.Component<Props> {
               backgroundColor: "white",
               alignItems: "center",
               justifyItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             <p
               style={{
                 flex: 1,
                 margin: "auto",
-                textAlign: "center"
+                textAlign: "center",
+                whiteSpace: 'nowrap',
+                lineBreak: 'strict',
+                textOverflow: 'clip',
               }}
             >
               {this.props.keyCommand?.scancode || ""}
@@ -89,7 +92,10 @@ export default class Key extends React.Component<Props> {
                 bottom: 0,
                 margin: 0,
                 textAlign: "center",
-                fontSize: 8
+                fontSize: 8,
+                whiteSpace: 'nowrap',
+                lineBreak: 'strict',
+                textOverflow: 'clip',
               }}
             >
               {this.props.bottomLabel}
