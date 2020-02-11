@@ -1,4 +1,5 @@
 {
+  "displayName": "Fr-ISO",
   "compatibleLayouts": ["ISO"],
   "labels": [
     { "scancode": "01", "label": "Echap" },

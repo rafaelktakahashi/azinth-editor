@@ -12,7 +12,7 @@ interface Props {
 }
 
 interface State {
-  currentPhysicalLayout: Object;
+  currentPhysicalLayout: any;
   /** Map from scancode to label, both strings */
   labelMap: { [key: string]: string };
 }
@@ -43,7 +43,7 @@ export default class Layer extends React.Component<Props, State> {
           position: "relative"
         }}
       >
-        {ANSI.keys.map(item => (
+        {this.state.currentPhysicalLayout.keys.map(item => (
           <Key
             width={item.width}
             height={item.height}

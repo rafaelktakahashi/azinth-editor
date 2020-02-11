@@ -1,4 +1,5 @@
 {
+  "displayName": "ABNT-2",
   "compatibleLayouts": ["ABNT-2"],
   "labels": [
     { "scancode": "01", "label": "Esc" },

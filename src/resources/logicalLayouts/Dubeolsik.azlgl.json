@@ -1,4 +1,5 @@
 {
+  "displayName": "Dubeolsik",
   "compatibleLayouts": ["Dubeolsik"],
   "labels": [
     { "scancode": "01", "label": "Esc" },

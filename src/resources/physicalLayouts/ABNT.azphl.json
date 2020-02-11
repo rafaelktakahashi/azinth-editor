@@ -535,6 +535,77 @@
       "xOffset": 19,
       "yOffset": 5.5
     },
-    { "scancode": "53", "width": 1, "height": 1, "xOffset": 21, "yOffset": 5.5 }
+    {
+      "scancode": "53",
+      "width": 1,
+      "height": 1,
+      "xOffset": 21,
+      "yOffset": 5.5
+    },
+    {
+      "scancode": "0e",
+      "width": 2,
+      "height": 1,
+      "xOffset": 13,
+      "yOffset": 1.5
+    },
+    {
+      "scancode": "1c",
+      "width": 1.5,
+      "height": 2,
+      "xOffset": 13.5,
+      "yOffset": 2.5,
+      "shape": "iso_return"
+    },
+    {
+      "scancode": "2b",
+      "width": 1,
+      "height": 1,
+      "xOffset": 12.75,
+      "yOffset": 3.5
+    },
+    {
+      "scancode": "2a",
+      "width": 1.25,
+      "height": 1,
+      "xOffset": 0,
+      "yOffset": 4.5
+    },
+    {
+      "scancode": "56",
+      "width": 1,
+      "height": 1,
+      "xOffset": 1.25,
+      "yOffset": 4.5
+    },
+    {
+      "scancode": "73",
+      "width": 1,
+      "height": 1,
+      "xOffset": 12.25,
+      "yOffset": 4.5
+    },
+    {
+      "scancode": "36",
+      "width": 1.75,
+      "height": 1,
+      "xOffset": 13.25,
+      "yOffset": 4.5
+    },
+    {
+      "scancode": "39",
+      "width": 6.25,
+      "height": 1,
+      "xOffset": 3.75,
+      "yOffset": 5.5
+    },
+    {
+      "scancode": "4e",
+      "width": 1,
+      "height": 1,
+      "xOffset": 22,
+      "yOffset": 2.5
+    },
+    { "scancode": "7e", "width": 1, "height": 1, "xOffset": 22, "yOffset": 3.5 }
   ]
 }

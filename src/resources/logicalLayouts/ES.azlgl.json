@@ -1,4 +1,5 @@
 {
+  "displayName": "Es-ISO",
   "compatibleLayouts": ["ISO"],
   "labels": [
     { "scancode": "01", "label": "Esc" },

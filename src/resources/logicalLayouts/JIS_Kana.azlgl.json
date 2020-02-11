@@ -1,4 +1,5 @@
 {
+  "displayName": "Japanese JIS (Kana)",
   "compatibleLayouts": ["JIS"],
   "labels": [
     { "scancode": "01", "label": "Esc" },
