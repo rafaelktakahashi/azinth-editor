@@ -31,19 +31,25 @@ export default class Menubar extends React.Component<{}> {
     activeMenuRef: null,
     activeMenu: ""
   };
-  fileRef: any;
-  editRef: any;
+
+  closeMenu(): void {
+    this.setState({
+      activeMenuRef: null,
+      activeMenu: ""
+    })
+  }
+
+  isOpen(menuName: string): boolean {
+    return (menuName || "").localeCompare(this.state.activeMenu) === 0;
+  }
 
   render(): JSX.Element {
     return (
       <Container>
         <MenuButton
-          ref={r => {
-            this.fileRef = r;
-          }}
-          onClick={() =>
+          onClick={(event) =>
             this.setState({
-              activeMenuRef: this.fileRef.current,
+              activeMenuRef: event.currentTarget,
               activeMenu: "file-menu"
             })
           }
@@ -51,34 +57,76 @@ export default class Menubar extends React.Component<{}> {
           <span>File</span>
         </MenuButton>
         <MenuButton
-          ref={r => {
-            this.editRef;
-          }}
-          onClick={() =>
+          onClick={(event) =>
             this.setState({
-              activeMenuRef: this.editRef.current,
+              activeMenuRef: event.currentTarget,
               activeMenu: "edit-menu"
             })
           }
         >
           <span>Edit</span>
         </MenuButton>
-        <MenuButton>
+        <MenuButton
+          onClick={(event) =>
+            this.setState({
+              activeMenuRef: event.currentTarget,
+              activeMenu: "view-menu"
+            })
+          }
+        >
           <span>View</span>
         </MenuButton>
-        <MenuButton>
+        <MenuButton
+          onClick={(event) =>
+            this.setState({
+              activeMenuRef: event.currentTarget,
+              activeMenu: "about-menu"
+            })
+          }
+        >
           <span>About</span>
         </MenuButton>
+
+        {/** Menu components with actions */}
         <Menu
           id="file-menu"
           anchorEl={this.state.activeMenuRef}
           keepMounted
-          open={"file-menu".localeCompare(this.state.activeMenu) === 0}
-          onClose={() => {
-            this.setState({ editMenuRef: null });
-          }}
+          open={this.isOpen("file-menu")}
+          onClose={this.closeMenu.bind(this)}
         >
           <MenuItem>New Layout</MenuItem>
+        </Menu>
+
+        <Menu
+          id="edit-menu"
+          anchorEl={this.state.activeMenuRef}
+          keepMounted
+          open={this.isOpen("edit-menu")}
+          onClose={this.closeMenu.bind(this)}
+        >
+          <MenuItem>Add Keyboard</MenuItem>
+        </Menu>
+
+        <Menu
+          id="view-menu"
+          anchorEl={this.state.activeMenuRef}
+          keepMounted
+          open={this.isOpen("view-menu")}
+          onClose={this.closeMenu.bind(this)}
+        >
+          <MenuItem>Zoom In</MenuItem>
+          <MenuItem>Zoom Out</MenuItem>
+        </Menu>
+
+        <Menu
+          id="about-menu"
+          anchorEl={this.state.activeMenuRef}
+          keepMounted
+          open={this.isOpen("about-menu")}
+          onClose={this.closeMenu.bind(this)}
+        >
+          <MenuItem>About Azinth Editor</MenuItem>
         </Menu>
       </Container>
     );
