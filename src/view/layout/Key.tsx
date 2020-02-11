@@ -39,7 +39,6 @@ export default class Key extends React.Component<Props> {
           left: UNIT_LENGTH * this.props.xOffset,
           top: UNIT_LENGTH * this.props.yOffset,
           flex: 1,
-          padding: "1px",
           width: UNIT_LENGTH * this.props.width,
           height: UNIT_LENGTH * this.props.height,
           backgroundColor: "#444444"
@@ -50,10 +49,12 @@ export default class Key extends React.Component<Props> {
           style={{
             position: "relative",
             flex: 1,
-            width: "100%",
-            height: "100%",
+            marginTop: 1,
+            marginLeft: 1,
+            width: (UNIT_LENGTH * this.props.width) - 2,
+            height: (UNIT_LENGTH * this.props.height) - 2,
             backgroundColor: "#d8d8d8",
-            borderRadius: 4
+            borderRadius: 3
           }}
         >
           <div
