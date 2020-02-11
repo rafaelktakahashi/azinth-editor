@@ -8,7 +8,7 @@ const Headerbar = styled.header`
   position: fixed;
   height: 32px;
   width: calc(100% - 2px); /*Compensate for body 1px border*/
-  background: #e8e8e8;
+  background: #f8f8f8;
 `;
 
 const DragRegion = styled.header`
@@ -26,7 +26,7 @@ const Main = styled.div`
   margin-top: 32px;
   padding: 20px;
   overflow-y: auto;
-  background-color: #e8e8e8;
+  background-color: #f8f8f8;
 `;
 
 const Title = styled.span`

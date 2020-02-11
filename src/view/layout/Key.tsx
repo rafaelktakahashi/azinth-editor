@@ -2,7 +2,7 @@ import * as React from "react";
 import KeystrokeCommand from "../../model/KeystrokeCommand";
 
 // This length is not configurable, unfortunately.
-const UNIT_LENGTH = 35;
+export const UNIT_LENGTH = 35;
 
 interface Props {
   shape: "rectangular" | "iso_return" | "big_return";
@@ -51,8 +51,8 @@ export default class Key extends React.Component<Props> {
             flex: 1,
             marginTop: 1,
             marginLeft: 1,
-            width: (UNIT_LENGTH * this.props.width) - 2,
-            height: (UNIT_LENGTH * this.props.height) - 2,
+            width: UNIT_LENGTH * this.props.width - 2,
+            height: UNIT_LENGTH * this.props.height - 2,
             backgroundColor: "#d8d8d8",
             borderRadius: 3
           }}
