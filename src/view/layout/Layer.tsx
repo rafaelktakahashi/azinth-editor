@@ -28,10 +28,6 @@ export default class Layer extends React.Component<Props, State> {
     prevState: State
   ): Partial<State> | null {
     const physLayout = getPhysicalLayout(props.physicalLayout);
-    // If it stayed the same, skip this method
-    if (prevState && physLayout === prevState.currentPhysicalLayout) {
-      return null;
-    }
 
     return {
       currentPhysicalLayout: physLayout,
