@@ -5,12 +5,24 @@ import Titlebar from "./view/titlebar/Titlebar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
 import Theme from "./theme";
+import Button from "@material-ui/core/Button";
+import ChangeLayoutModal from "./view/modal/changeLayoutModal";
 
 const Index = () => {
   return (
     <MuiThemeProvider theme={Theme}>
       <StyledComponentsThemeProvider theme={Theme}>
         <Titlebar title="Azinth editor">
+          <ChangeLayoutModal ref={r => (this.changeLayoutModalRef = r)} />
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              this.changeLayoutModalRef?.openModal();
+            }}
+          >
+            ChangeLayoutModal
+          </Button>
           <Layer logicalLayout="ABNT_2" physicalLayout="ABNT" />
           <div style={{ height: 10 }} />
           <Layer logicalLayout="JIS" physicalLayout="JIS" />
