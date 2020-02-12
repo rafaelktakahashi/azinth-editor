@@ -6,8 +6,16 @@ export default createMuiTheme({
     primary: cyan,
     secondary: amber,
     background: {
-        // paper: "#e8e8e8",
-        default: "#f8f8f8",
+      // paper: "#e8e8e8",
+      default: "#f8f8f8"
+    }
+  },
+  props: {
+    MuiMenuItem: {
+      dense: true
+    },
+    MuiMenuList: {
+      dense: true
     }
   }
 });
