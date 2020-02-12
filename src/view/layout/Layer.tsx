@@ -9,7 +9,6 @@ import {
   getLogicalLayout,
   LogicalLayout
 } from "../../resources/logicalLayouts/index";
-import US_ANSI from "../../resources/logicalLayouts/US.azlgl.json";
 
 interface Props {
   physicalLayout: PhysicalLayout;
