@@ -33,8 +33,6 @@ export default class Layer extends React.Component<Props, State> {
       return null;
     }
 
-    // Go through the keys to figure out the necessary width and height
-
     return {
       currentPhysicalLayout: physLayout,
       currentLogicalLayout: getLogicalLayout(props.logicalLayout),
