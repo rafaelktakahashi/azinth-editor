@@ -1,7 +1,13 @@
 import * as React from "react";
 import Modal from "@material-ui/core/Modal";
 import ModalContainer from "./ModalContainer";
-import { Select, MenuItem, InputLabel, FormControl } from "@material-ui/core";
+import {
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Grid
+} from "@material-ui/core";
 import {
   PhysicalLayout,
   getPhysicalLayoutsList
@@ -43,25 +49,54 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
         open={this.state.open}
         onClose={() => this.setState({ open: false })}
       >
-        <ModalContainer title="Change Layout">
-          <FormControl>
-            <InputLabel id="physical-layout-label">Physical Layout</InputLabel>
-            <Select
-              labelId="physical-layout-label"
-              id="physical-layout-select"
-              style={{ minWidth: 170 }}
-              value={this.state.selectedPhysicalLayout}
-              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                this.setState({
-                  selectedPhysicalLayout: event.target.value as PhysicalLayout
-                });
-              }}
-            >
-              {getPhysicalLayoutsList().map(ph => (
-                <MenuItem value={ph}>{ph}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <ModalContainer maxWidth="xs" title="Change Layout">
+          <Grid container>
+            <Grid item xs={12}>
+              <FormControl>
+                <InputLabel id="physical-layout-label">
+                  Physical Layout
+                </InputLabel>
+                <Select
+                  labelId="physical-layout-label"
+                  id="physical-layout-select"
+                  style={{ minWidth: 170 }}
+                  value={this.state.selectedPhysicalLayout}
+                  onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                    this.setState({
+                      selectedPhysicalLayout: event.target
+                        .value as PhysicalLayout
+                    });
+                  }}
+                >
+                  {getPhysicalLayoutsList().map(ph => (
+                    <MenuItem value={ph}>{ph}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl>
+                <InputLabel id="logical-layout-label">
+                  Logical Layout
+                </InputLabel>
+                <Select
+                  labelId="logical-layout-label"
+                  id="logical-layout-select"
+                  style={{ minWidth: 170 }}
+                  value={this.state.selectedLogicalLayout}
+                  onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                    this.setState({
+                      selectedLogicalLayout: event.target.value as LogicalLayout
+                    });
+                  }}
+                >
+                  {getLogicalLayoutsList().map(lg => (
+                    <MenuItem value={lg}>{lg}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
         </ModalContainer>
       </Modal>
     );

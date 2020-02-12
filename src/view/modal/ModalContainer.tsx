@@ -11,11 +11,19 @@ const ModalContainer = styled(Container)`
 
 const ModalPaper = styled(Paper)`
   background-color: white;
-  padding: 5px 15px;
+  padding: 15px 25px;
 `;
 
-export default ({ title, children }) => (
-  <ModalContainer maxWidth="sm">
+export default ({
+  title,
+  maxWidth,
+  children
+}: {
+  title: string;
+  maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
+  children: JSX.Element | JSX.Element[];
+}) => (
+  <ModalContainer maxWidth={maxWidth || "sm"}>
     <ModalPaper>
       <Typography variant="h2" color="primary">
         {title}
