@@ -17,11 +17,9 @@ interface Props {
 
 interface State {
   currentPhysicalLayout: any;
-  /** Map from scancode to label, both strings */
-  labelMap: { [key: string]: string };
+  currentLogicalLayout: any;
   /** Size of this component, based on the keys rendered in it. */
   dimensions: { width: number; height: number };
-  memoizedLogicalLayout: LogicalLayout;
 }
 
 export default class Layer extends React.Component<Props, State> {
@@ -49,21 +47,9 @@ export default class Layer extends React.Component<Props, State> {
       }
     }
 
-    let labelMap = {};
-    if (prevState && props.logicalLayout === prevState.memoizedLogicalLayout) {
-      labelMap = prevState.labelMap;
-    } else {
-      const logicalLayout = getLogicalLayout(props.logicalLayout);
-      for (var i = 0; i < logicalLayout.labels.length; i++) {
-        labelMap[logicalLayout.labels[i].scancode] =
-          logicalLayout.labels[i].label;
-      }
-    }
-
     return {
       currentPhysicalLayout: physLayout,
-      labelMap,
-      memoizedLogicalLayout: props.logicalLayout,
+      currentLogicalLayout: getLogicalLayout(props.logicalLayout),
       dimensions: {
         width: maxWidthUnits * UNIT_LENGTH,
         height: maxHeightUnits * UNIT_LENGTH
@@ -95,7 +81,9 @@ export default class Layer extends React.Component<Props, State> {
               height={item.height}
               xOffset={item.xOffset}
               yOffset={item.yOffset}
-              bottomLabel={this.state.labelMap[item.scancode]}
+              bottomLabel={
+                this.state.currentLogicalLayout.labels[item.scancode]
+              }
             />
           ))}
         </Container>
