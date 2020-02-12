@@ -11,7 +11,12 @@ const Index = () => {
     <MuiThemeProvider theme={Theme}>
       <StyledComponentsThemeProvider theme={Theme}>
         <Titlebar title="Azinth editor">
+          <Layer logicalLayout="ABNT_2" physicalLayout="ABNT" />
+          <div style={{ height: 10 }} />
           <Layer logicalLayout="JIS" physicalLayout="JIS" />
+          <div style={{ height: 10 }} />
+          <Layer logicalLayout="US" physicalLayout="ANSI" />
+          <div style={{ height: 60 }} />
         </Titlebar>
       </StyledComponentsThemeProvider>
     </MuiThemeProvider>

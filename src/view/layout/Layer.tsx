@@ -34,28 +34,13 @@ export default class Layer extends React.Component<Props, State> {
     }
 
     // Go through the keys to figure out the necessary width and height
-    var maxWidthUnits = 0;
-    var maxHeightUnits = 0;
-    const scancodes = Object.keys(physLayout.keys);
-    for (var i = 0; i < scancodes.length; i++) {
-      const sc = scancodes[i];
-      const thisWidth = physLayout.keys[sc].xOffset + physLayout.keys[sc].width;
-      const thisHeight =
-        physLayout.keys[sc].yOffset + physLayout.keys[sc].height;
-      if (thisWidth > maxWidthUnits) {
-        maxWidthUnits = thisWidth;
-      }
-      if (thisHeight > maxHeightUnits) {
-        maxHeightUnits = thisHeight;
-      }
-    }
 
     return {
       currentPhysicalLayout: physLayout,
       currentLogicalLayout: getLogicalLayout(props.logicalLayout),
       dimensions: {
-        width: maxWidthUnits * UNIT_LENGTH,
-        height: maxHeightUnits * UNIT_LENGTH
+        width: UNIT_LENGTH * physLayout.width,
+        height: UNIT_LENGTH * physLayout.height
       }
     };
   }

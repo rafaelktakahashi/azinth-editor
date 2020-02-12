@@ -1,5 +1,7 @@
 {
   "name": "ISO",
+  "height": 6.5,
+  "width": 23,
   "keys": {
     "01": { "width": 1, "height": 1, "xOffset": 0, "yOffset": 0 },
     "3b": { "width": 1, "height": 1, "xOffset": 2, "yOffset": 0 },
