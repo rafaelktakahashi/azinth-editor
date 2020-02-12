@@ -36,9 +36,12 @@ export default class Layer extends React.Component<Props, State> {
     // Go through the keys to figure out the necessary width and height
     var maxWidthUnits = 0;
     var maxHeightUnits = 0;
-    for (var i = 0; i < physLayout.keys.length; i++) {
-      const thisWidth = physLayout.keys[i].xOffset + physLayout.keys[i].width;
-      const thisHeight = physLayout.keys[i].yOffset + physLayout.keys[i].height;
+    const scancodes = Object.keys(physLayout.keys);
+    for (var i = 0; i < scancodes.length; i++) {
+      const sc = scancodes[i];
+      const thisWidth = physLayout.keys[sc].xOffset + physLayout.keys[sc].width;
+      const thisHeight =
+        physLayout.keys[sc].yOffset + physLayout.keys[sc].height;
       if (thisWidth > maxWidthUnits) {
         maxWidthUnits = thisWidth;
       }
@@ -75,17 +78,18 @@ export default class Layer extends React.Component<Props, State> {
             position: "relative"
           }}
         >
-          {this.state.currentPhysicalLayout.keys.map(item => (
-            <Key
-              width={item.width}
-              height={item.height}
-              xOffset={item.xOffset}
-              yOffset={item.yOffset}
-              bottomLabel={
-                this.state.currentLogicalLayout.labels[item.scancode]
-              }
-            />
-          ))}
+          {Object.keys(this.state.currentPhysicalLayout.keys).map(scancode => {
+            const key = this.state.currentPhysicalLayout.keys[scancode];
+            return (
+              <Key
+                width={key.width}
+                height={key.height}
+                xOffset={key.xOffset}
+                yOffset={key.yOffset}
+                bottomLabel={this.state.currentLogicalLayout.labels[scancode]}
+              />
+            );
+          })}
         </Container>
       </Paper>
     );
