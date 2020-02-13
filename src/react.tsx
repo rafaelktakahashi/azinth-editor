@@ -18,7 +18,9 @@ const Index = () => {
             color="primary"
             variant="contained"
             onClick={() => {
-              this.changeLayoutModalRef?.openModal();
+              this.changeLayoutModalRef?.openModal().then(r => {
+                console.log(JSON.stringify(r));
+              });
             }}
           >
             ChangeLayoutModal

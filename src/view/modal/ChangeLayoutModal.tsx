@@ -16,6 +16,12 @@ import {
   LogicalLayout,
   getLogicalLayoutsList
 } from "../../resources/logicalLayouts";
+import ModalResponse from "./ModalResponse";
+
+interface Response {
+  selectedPhysicalLayout?: PhysicalLayout;
+  selectedLogicalLayout?: LogicalLayout;
+}
 
 interface State {
   open: boolean;
@@ -32,23 +38,47 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
     };
   }
 
+  resolver: (arg0: ModalResponse<Response>) => void = null;
+
   openModal(
     currentPhysicalLayout: PhysicalLayout,
     currentLogicalLayout: LogicalLayout
-  ) {
+  ): Promise<ModalResponse<Response>> {
     this.setState({
       open: true,
       selectedPhysicalLayout: currentPhysicalLayout,
       selectedLogicalLayout: currentLogicalLayout
     });
+
+    return new Promise(
+      ((resolve: (arg0: ModalResponse<Response>) => void) => {
+        this.resolver = resolve;
+      }).bind(this)
+    );
+  }
+
+  closeModal() {
+    this.setState(
+      {
+        open: false
+      },
+      () => {
+        this.resolver?.({
+          canceled: false,
+          success: true,
+          value: {
+            selectedLogicalLayout: this.state.selectedLogicalLayout,
+            selectedPhysicalLayout: this.state.selectedPhysicalLayout
+          }
+        });
+        this.resolver = null;
+      }
+    );
   }
 
   render(): JSX.Element {
     return (
-      <Modal
-        open={this.state.open}
-        onClose={() => this.setState({ open: false })}
-      >
+      <Modal open={this.state.open} onClose={() => this.closeModal()}>
         <ModalContainer maxWidth="xs" title="Change Layout">
           <Grid container>
             <Grid item xs={12}>
