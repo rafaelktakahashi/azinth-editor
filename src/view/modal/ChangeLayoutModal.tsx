@@ -6,7 +6,8 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Grid
+  Grid,
+  Button
 } from "@material-ui/core";
 import {
   PhysicalLayout,
@@ -16,69 +17,85 @@ import {
   LogicalLayout,
   getLogicalLayoutsList
 } from "../../resources/logicalLayouts";
-import ModalResponse from "./ModalResponse";
 
-interface Response {
+interface ChangeLayoutModalResponse {
   selectedPhysicalLayout?: PhysicalLayout;
   selectedLogicalLayout?: LogicalLayout;
 }
 
 interface State {
   open: boolean;
-  selectedPhysicalLayout?: PhysicalLayout;
-  selectedLogicalLayout?: LogicalLayout;
+  selectedPhysicalLayout: PhysicalLayout | "";
+  selectedLogicalLayout: LogicalLayout | "";
 }
 export default class ChangeLayoutModal extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
       open: false,
-      selectedPhysicalLayout: null,
-      selectedLogicalLayout: null
+      selectedPhysicalLayout: "",
+      selectedLogicalLayout: ""
     };
   }
 
-  resolver: (arg0: ModalResponse<Response>) => void = null;
+  resolver: null | ((arg0: ChangeLayoutModalResponse) => void) = null;
+  rejecter: null | ((arg0: Error) => void) = null;
 
   openModal(
     currentPhysicalLayout: PhysicalLayout,
     currentLogicalLayout: LogicalLayout
-  ): Promise<ModalResponse<Response>> {
+  ): Promise<ChangeLayoutModalResponse> {
     this.setState({
       open: true,
       selectedPhysicalLayout: currentPhysicalLayout,
       selectedLogicalLayout: currentLogicalLayout
     });
 
-    return new Promise(
-      ((resolve: (arg0: ModalResponse<Response>) => void) => {
+    return new Promise<ChangeLayoutModalResponse>(
+      ((
+        resolve: (arg0: ChangeLayoutModalResponse) => void,
+        reject: (arg0: Error) => void
+      ) => {
         this.resolver = resolve;
+        this.rejecter = reject;
       }).bind(this)
     );
   }
 
-  closeModal() {
+  closeModal(canceledReason?: string) {
     this.setState(
       {
         open: false
       },
       () => {
-        this.resolver?.({
-          canceled: false,
-          success: true,
-          value: {
-            selectedLogicalLayout: this.state.selectedLogicalLayout,
-            selectedPhysicalLayout: this.state.selectedPhysicalLayout
-          }
-        });
+        if (canceledReason) {
+          // Reject with an error whose message is the reason for canceling
+          this.rejecter?.(new Error(canceledReason));
+        } else {
+          // Resolve with a response object
+          this.resolver?.({
+            selectedLogicalLayout:
+              this.state.selectedLogicalLayout === ""
+                ? null
+                : this.state.selectedLogicalLayout,
+            selectedPhysicalLayout:
+              this.state.selectedPhysicalLayout === ""
+                ? null
+                : this.state.selectedPhysicalLayout
+          });
+        }
         this.resolver = null;
+        this.rejecter = null;
       }
     );
   }
 
   render(): JSX.Element {
     return (
-      <Modal open={this.state.open} onClose={() => this.closeModal()}>
+      <Modal
+        open={this.state.open}
+        onClose={(_, reason) => this.closeModal(reason)}
+      >
         <ModalContainer maxWidth="xs" title="Change Layout">
           <Grid container>
             <Grid item xs={12}>
@@ -126,6 +143,17 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
                 </Select>
               </FormControl>
             </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.closeModal();
+              }}
+            >
+              OK
+            </Button>
           </Grid>
         </ModalContainer>
       </Modal>
