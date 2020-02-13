@@ -35,7 +35,7 @@ const Index = () => {
           <Layer logicalLayout="JIS" physicalLayout="JIS" />
           <div style={{ height: 10 }} />
           <Layer logicalLayout="US" physicalLayout="ANSI" />
-          <div style={{ height: 60 }} />
+          <div style={{ height: 10 }} />
         </Titlebar>
       </StyledComponentsThemeProvider>
     </MuiThemeProvider>

@@ -22,9 +22,8 @@ const DragRegion = styled.header`
 `;
 
 const Main = styled.div`
-  height: 100%;
+  height: calc(100% - 32px);
   margin-top: 32px;
-  padding: 20px;
   overflow-y: auto;
   background-color: ${props => props.theme.palette.background.default};
 `;
