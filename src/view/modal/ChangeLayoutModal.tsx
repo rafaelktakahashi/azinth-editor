@@ -97,7 +97,7 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
         onClose={(_, reason) => this.closeModal(reason)}
       >
         <ModalContainer maxWidth="xs" title="Change Layout">
-          <Grid container>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormControl>
                 <InputLabel id="physical-layout-label">
@@ -143,17 +143,17 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
                 </Select>
               </FormControl>
             </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                this.closeModal();
-              }}
-            >
-              OK
-            </Button>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  this.closeModal();
+                }}
+              >
+                OK
+              </Button>
+            </Grid>
           </Grid>
         </ModalContainer>
       </Modal>

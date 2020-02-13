@@ -25,7 +25,7 @@ export default ({
 }) => (
   <ModalContainer maxWidth={maxWidth || "sm"}>
     <ModalPaper>
-      <Typography variant="h2" color="primary">
+      <Typography variant="h2" color="primary" style={{ marginBottom: 15 }}>
         {title}
       </Typography>
       {children}
