@@ -4,15 +4,15 @@ let win = null;
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 900,
-    height: 500,
+    width: 1100,
+    height: 600,
     frame: false,
     resizable: true,
     maximizable: true,
     backgroundColor: "#00000000",
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   });
 
   // and load the index.html of the app.

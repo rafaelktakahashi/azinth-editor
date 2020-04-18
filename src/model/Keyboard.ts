@@ -1,5 +1,7 @@
 import Scancode from "./Scancode";
 import Layer from "./Layer";
+import { PhysicalLayout } from "../resources/physicalLayouts";
+import { LogicalLayout } from "../resources/logicalLayouts";
 
 export interface KeyboardModifier {
   /**
@@ -19,10 +21,8 @@ export interface KeyboardModifier {
 export default interface Keyboard {
   name: string;
   alias: string;
-  /** e.g. 'ANSI' */
-  physicalLayout: string;
-  /** e.g. 'US' */
-  logicalLayout: string;
+  physicalLayout: PhysicalLayout;
+  logicalLayout: LogicalLayout;
   /**
    * Modifiers registered for this keyboard. For any physical key registered as
    * a modifier, a remap (in any layer) registered to the same physical key

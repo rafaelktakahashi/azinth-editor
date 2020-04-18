@@ -25,6 +25,8 @@ interface State {
 }
 
 export default class Layer extends React.Component<Props, State> {
+  // Derive the physical and logical layouts from their names.
+  // Note that all objects are preloaded and getting them has little cost.
   static getDerivedStateFromProps(
     props: Props,
     prevState: State
@@ -62,12 +64,10 @@ export default class Layer extends React.Component<Props, State> {
 
   render(): JSX.Element {
     return (
-      <Paper
+      <div
         style={{
           position: "relative",
-          padding: 10,
           overflow: "auto",
-          backgroundColor: "#e8e8e8",
           maxWidth: this.state.dimensions.width,
         }}
       >
@@ -94,26 +94,8 @@ export default class Layer extends React.Component<Props, State> {
               );
             }
           )}
-          {/** Render an options button at the top right */}
-          <Button
-            onClick={this.changeLayout.bind(this)}
-            style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              minHeight: 30,
-              maxHeight: 30,
-              minWidth: 30,
-              maxWidth: 30,
-              alignItems: "center",
-              alignContent: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Language fontSize="small" />
-          </Button>
         </Container>
-      </Paper>
+      </div>
     );
   }
 }
