@@ -30,13 +30,13 @@ const MenuButton = styled.div`
 export default class Menubar extends React.Component<{}> {
   state = {
     activeMenuRef: null,
-    activeMenu: ""
+    activeMenu: "",
   };
 
   closeMenu(): void {
     this.setState({
       activeMenuRef: null,
-      activeMenu: ""
+      activeMenu: "",
     });
   }
 
@@ -58,40 +58,40 @@ export default class Menubar extends React.Component<{}> {
     return (
       <Container>
         <MenuButton
-          onClick={event =>
+          onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "file-menu"
+              activeMenu: "file-menu",
             })
           }
         >
           <span>File</span>
         </MenuButton>
         <MenuButton
-          onClick={event =>
+          onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "edit-menu"
+              activeMenu: "edit-menu",
             })
           }
         >
           <span>Edit</span>
         </MenuButton>
         <MenuButton
-          onClick={event =>
+          onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "view-menu"
+              activeMenu: "view-menu",
             })
           }
         >
           <span>View</span>
         </MenuButton>
         <MenuButton
-          onClick={event =>
+          onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "about-menu"
+              activeMenu: "about-menu",
             })
           }
         >

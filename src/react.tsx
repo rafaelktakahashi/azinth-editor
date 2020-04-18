@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Layer from "./view/layout/Layer";
+import LayerView from "./view/layout/LayerView";
 import Titlebar from "./view/titlebar/Titlebar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
@@ -28,9 +28,12 @@ const Index = () => {
   return (
     <MuiThemeProvider theme={Theme}>
       <StyledComponentsThemeProvider theme={Theme}>
-        <Titlebar title="Azinth editor">
+        {/** To use a custom titlebar, replace this div with it */}
+        <div
+          style={{ width: "100%", height: "100%", backgroundColor: "white" }}
+        >
           <KeyboardView keyboard={sampleKeyboard} />
-        </Titlebar>
+        </div>
       </StyledComponentsThemeProvider>
     </MuiThemeProvider>
   );

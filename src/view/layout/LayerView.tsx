@@ -1,5 +1,5 @@
 import * as React from "react";
-import Key, { UNIT_LENGTH } from "./Key";
+import KeyView, { UNIT_LENGTH } from "./KeyView";
 import { Container, Paper, Button } from "@material-ui/core";
 import { Language } from "@material-ui/icons";
 import {
@@ -24,7 +24,11 @@ interface State {
   dimensions: { width: number; height: number };
 }
 
-export default class Layer extends React.Component<Props, State> {
+/**
+ * Collection of keys arranged according to a physical layout. Each key is also
+ * given labels that depend on the logical layout.
+ */
+export default class LayerView extends React.Component<Props, State> {
   // Derive the physical and logical layouts from their names.
   // Note that all objects are preloaded and getting them has little cost.
   static getDerivedStateFromProps(
@@ -84,7 +88,7 @@ export default class Layer extends React.Component<Props, State> {
             (scancode) => {
               const key = this.state.currentPhysicalLayout.keys[scancode];
               return (
-                <Key
+                <KeyView
                   width={key.width}
                   height={key.height}
                   xOffset={key.xOffset}

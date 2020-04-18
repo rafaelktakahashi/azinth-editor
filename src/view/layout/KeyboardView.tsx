@@ -1,5 +1,5 @@
 import * as React from "react";
-import Layer from "./Layer";
+import LayerView from "./LayerView";
 import { Paper, Typography, Grid, Button } from "@material-ui/core";
 import ChangeLayoutModal from "../modal/ChangeLayoutModal";
 import Keyboard from "../../model/Keyboard";
@@ -9,6 +9,10 @@ interface Props {
   keyboard: Keyboard;
 }
 
+/**
+ * Collection of layers (which are themselves collections of keys). Each layer
+ * is given a modifier combination.
+ */
 export default class KeyboardView extends React.Component<Props, {}> {
   changeLayoutModal: ChangeLayoutModal | null = null;
 
@@ -57,7 +61,7 @@ export default class KeyboardView extends React.Component<Props, {}> {
             </div>
           </Grid>
         </Grid>
-        <Layer
+        <LayerView
           physicalLayout={this.props.keyboard.physicalLayout}
           logicalLayout={this.props.keyboard.logicalLayout}
         />

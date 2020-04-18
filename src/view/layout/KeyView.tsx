@@ -18,7 +18,11 @@ interface Props {
   bottomLabel: string;
 }
 
-export default class Key extends React.Component<Props> {
+/**
+ * Representation of a keyboard key, with a shape and position in the keyboard
+ * defined in units, where the unit is the side length of a square key.
+ */
+export default class KeyView extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }
@@ -27,7 +31,7 @@ export default class Key extends React.Component<Props> {
     shape: "rectangular",
     width: 1,
     height: 1,
-    bottomLabel: ""
+    bottomLabel: "",
   };
 
   renderRectangularKey(): JSX.Element {
@@ -41,7 +45,7 @@ export default class Key extends React.Component<Props> {
           flex: 1,
           width: UNIT_LENGTH * this.props.width,
           height: UNIT_LENGTH * this.props.height,
-          backgroundColor: "#444444"
+          backgroundColor: "#444444",
         }}
       >
         <div
@@ -54,7 +58,7 @@ export default class Key extends React.Component<Props> {
             width: UNIT_LENGTH * this.props.width - 2,
             height: UNIT_LENGTH * this.props.height - 2,
             backgroundColor: "#d8d8d8",
-            borderRadius: 3
+            borderRadius: 3,
           }}
         >
           <div
@@ -77,9 +81,9 @@ export default class Key extends React.Component<Props> {
                 flex: 1,
                 margin: "auto",
                 textAlign: "center",
-                whiteSpace: 'nowrap',
-                lineBreak: 'strict',
-                textOverflow: 'clip',
+                whiteSpace: "nowrap",
+                lineBreak: "strict",
+                textOverflow: "clip",
               }}
             >
               {this.props.keyCommand?.scancode || ""}
@@ -93,9 +97,9 @@ export default class Key extends React.Component<Props> {
                 margin: 0,
                 textAlign: "center",
                 fontSize: 8,
-                whiteSpace: 'nowrap',
-                lineBreak: 'strict',
-                textOverflow: 'clip',
+                whiteSpace: "nowrap",
+                lineBreak: "strict",
+                textOverflow: "clip",
               }}
             >
               {this.props.bottomLabel}

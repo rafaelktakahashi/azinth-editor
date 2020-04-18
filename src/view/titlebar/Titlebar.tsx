@@ -3,12 +3,20 @@ import styled from "styled-components";
 import { remote } from "electron";
 import Menubar from "./Menubar";
 
+/**
+ * IMPORTANT
+ * This whole module exists for replacing the standard titlebar, for purely
+ * aesthetic purposes. It's currently unused because it's way too much work to
+ * do too little. I might come back to work on this after the essential parts
+ * of the application are working.
+ */
+
 const Headerbar = styled.header`
   display: block;
   position: fixed;
   height: 32px;
   width: calc(100% - 2px); /*Compensate for body 1px border*/
-  background: ${props => props.theme.palette.background.default};
+  background: ${(props) => props.theme.palette.background.default};
 `;
 
 const DragRegion = styled.header`
@@ -25,7 +33,7 @@ const Main = styled.div`
   height: calc(100% - 32px);
   margin-top: 32px;
   overflow-y: auto;
-  background-color: ${props => props.theme.palette.background.default};
+  background-color: ${(props) => props.theme.palette.background.default};
 `;
 
 const Title = styled.span`
