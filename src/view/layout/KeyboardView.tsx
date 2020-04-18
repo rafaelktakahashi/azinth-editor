@@ -1,19 +1,32 @@
 import * as React from "react";
 import LayerView from "./LayerView";
-import { Paper, Typography, Grid, Button } from "@material-ui/core";
+import { Paper, Typography, Grid, Button, Divider } from "@material-ui/core";
 import ChangeLayoutModal from "../modal/ChangeLayoutModal";
 import Keyboard from "../../model/Keyboard";
 import { Language } from "@material-ui/icons";
+import ModifierListView from "./ModifierListView";
+import KeyboardModifier from "../../model/KeyboardModifier";
 
 interface Props {
   keyboard: Keyboard;
+}
+
+interface State {
+  selectedModifiers: KeyboardModifier[];
 }
 
 /**
  * Collection of layers (which are themselves collections of keys). Each layer
  * is given a modifier combination.
  */
-export default class KeyboardView extends React.Component<Props, {}> {
+export default class KeyboardView extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+    // Initialize state with no selected modifiers.
+    this.state = {
+      selectedModifiers: [],
+    };
+  }
   changeLayoutModal: ChangeLayoutModal | null = null;
 
   render(): JSX.Element {
@@ -60,6 +73,17 @@ export default class KeyboardView extends React.Component<Props, {}> {
               />
             </div>
           </Grid>
+          <Grid xs={12} style={{ paddingTop: 10, paddingBottom: 10 }}>
+            <ModifierListView
+              keyboardModifiers={this.props.keyboard.modifiers}
+              selectedKeyboardModifiers={this.state.selectedModifiers}
+              onSelectionChanged={(newSelection, _) => {
+                this.setState({
+                  selectedModifiers: newSelection,
+                });
+              }}
+            />
+          </Grid>
         </Grid>
         <LayerView
           physicalLayout={this.props.keyboard.physicalLayout}
@@ -78,7 +102,7 @@ const KeyboardTitle = ({ alias, name }: { alias: string; name: string }) => (
       alignItems: "flex-end",
     }}
   >
-    <Typography variant="h1" style={{ color: "blue" }}>
+    <Typography variant="h1" color="primary">
       {alias}
     </Typography>
     <div style={{ width: 10 }} />

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Typography } from "@material-ui/core";
 import KeystrokeCommand from "../../model/KeystrokeCommand";
 
 // This length is not configurable, unfortunately.
@@ -76,7 +77,7 @@ export default class KeyView extends React.Component<Props> {
               justifyContent: "center",
             }}
           >
-            <p
+            <Typography
               style={{
                 flex: 1,
                 margin: "auto",
@@ -84,11 +85,12 @@ export default class KeyView extends React.Component<Props> {
                 whiteSpace: "nowrap",
                 lineBreak: "strict",
                 textOverflow: "clip",
+                fontFamily: "Arial", // easier to read than Roboto for small text
               }}
             >
               {this.props.keyCommand?.scancode || ""}
-            </p>
-            <p
+            </Typography>
+            <Typography
               style={{
                 position: "absolute",
                 left: 0,
@@ -100,10 +102,11 @@ export default class KeyView extends React.Component<Props> {
                 whiteSpace: "nowrap",
                 lineBreak: "strict",
                 textOverflow: "clip",
+                fontFamily: "Arial",
               }}
             >
               {this.props.bottomLabel}
-            </p>
+            </Typography>
           </div>
         </div>
       </div>

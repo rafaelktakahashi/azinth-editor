@@ -1,9 +1,9 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { cyan, amber } from "@material-ui/core/colors";
+import { blue, amber } from "@material-ui/core/colors";
 
 export default createMuiTheme({
   palette: {
-    primary: cyan,
+    primary: blue,
     secondary: amber,
     background: {
       // paper: "#e8e8e8",

@@ -16,7 +16,16 @@ const Index = () => {
     name: "1234567890",
     logicalLayout: "ABNT_2",
     physicalLayout: "ABNT",
-    modifiers: [],
+    modifiers: [
+      {
+        name: "Shift",
+        scancodes: ["2a", "3e"],
+      },
+      {
+        name: "AltGr",
+        scancodes: ["3a"],
+      },
+    ],
     layers: [
       {
         alias: "Example layer",
@@ -26,16 +35,15 @@ const Index = () => {
     ],
   };
   return (
-    <MuiThemeProvider theme={Theme}>
-      <StyledComponentsThemeProvider theme={Theme}>
-        {/** To use a custom titlebar, replace this div with it */}
-        <div
-          style={{ width: "100%", height: "100%", backgroundColor: "white" }}
-        >
+    <div style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+      <MuiThemeProvider theme={Theme}>
+        <StyledComponentsThemeProvider theme={Theme}>
+          {/** To use a custom titlebar, wrap this view in it */}
+
           <KeyboardView keyboard={sampleKeyboard} />
-        </div>
-      </StyledComponentsThemeProvider>
-    </MuiThemeProvider>
+        </StyledComponentsThemeProvider>
+      </MuiThemeProvider>
+    </div>
   );
 };
 
