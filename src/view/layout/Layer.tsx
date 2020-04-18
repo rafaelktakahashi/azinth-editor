@@ -1,14 +1,16 @@
 import * as React from "react";
 import Key, { UNIT_LENGTH } from "./Key";
-import { Container, Paper } from "@material-ui/core";
+import { Container, Paper, Button } from "@material-ui/core";
+import { Language } from "@material-ui/icons";
 import {
   getPhysicalLayout,
-  PhysicalLayout
+  PhysicalLayout,
 } from "../../resources/physicalLayouts/index";
 import {
   getLogicalLayout,
-  LogicalLayout
+  LogicalLayout,
 } from "../../resources/logicalLayouts/index";
+import ChangeLayoutModal from "../modal/changeLayoutModal";
 
 interface Props {
   physicalLayout: PhysicalLayout;
@@ -34,9 +36,28 @@ export default class Layer extends React.Component<Props, State> {
       currentLogicalLayout: getLogicalLayout(props.logicalLayout),
       dimensions: {
         width: UNIT_LENGTH * physLayout.width,
-        height: UNIT_LENGTH * physLayout.height
-      }
+        height: UNIT_LENGTH * physLayout.height,
+      },
     };
+  }
+
+  changeLayoutModal: ChangeLayoutModal | null = null;
+
+  changeLayout(): void {
+    this.changeLayoutModal
+      ?.openModal(
+        this.state.currentPhysicalLayout,
+        this.state.currentLogicalLayout
+      )
+      .then((r) => {
+        this.setState({
+          currentPhysicalLayout: r.selectedPhysicalLayout,
+          currentLogicalLayout: r.selectedLogicalLayout,
+        });
+      })
+      .catch((e) => {
+        console.warn(`Error: ${e.message}`);
+      });
   }
 
   render(): JSX.Element {
@@ -47,28 +68,50 @@ export default class Layer extends React.Component<Props, State> {
           padding: 10,
           overflow: "auto",
           backgroundColor: "#e8e8e8",
-          maxWidth: this.state.dimensions.width
+          maxWidth: this.state.dimensions.width,
         }}
       >
+        <ChangeLayoutModal ref={(r) => (this.changeLayoutModal = r)} />
         <Container
           style={{
             height: this.state.dimensions.height,
             width: this.state.dimensions.width,
-            position: "relative"
+            position: "relative",
           }}
         >
-          {Object.keys(this.state.currentPhysicalLayout.keys).map(scancode => {
-            const key = this.state.currentPhysicalLayout.keys[scancode];
-            return (
-              <Key
-                width={key.width}
-                height={key.height}
-                xOffset={key.xOffset}
-                yOffset={key.yOffset}
-                bottomLabel={this.state.currentLogicalLayout.labels[scancode]}
-              />
-            );
-          })}
+          {/** Render one key for each item in the physical layout */}
+          {Object.keys(this.state.currentPhysicalLayout.keys).map(
+            (scancode) => {
+              const key = this.state.currentPhysicalLayout.keys[scancode];
+              return (
+                <Key
+                  width={key.width}
+                  height={key.height}
+                  xOffset={key.xOffset}
+                  yOffset={key.yOffset}
+                  bottomLabel={this.state.currentLogicalLayout.labels[scancode]}
+                />
+              );
+            }
+          )}
+          {/** Render an options button at the top right */}
+          <Button
+            onClick={this.changeLayout.bind(this)}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              minHeight: 30,
+              maxHeight: 30,
+              minWidth: 30,
+              maxWidth: 30,
+              alignItems: "center",
+              alignContent: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Language fontSize="small" />
+          </Button>
         </Container>
       </Paper>
     );

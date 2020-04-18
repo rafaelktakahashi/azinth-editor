@@ -13,23 +13,7 @@ const Index = () => {
     <MuiThemeProvider theme={Theme}>
       <StyledComponentsThemeProvider theme={Theme}>
         <Titlebar title="Azinth editor">
-          <ChangeLayoutModal ref={r => (this.changeLayoutModalRef = r)} />
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              (this.changeLayoutModalRef as ChangeLayoutModal)
-                ?.openModal("ABNT", "ABNT_2")
-                .then(r => {
-                  console.log(JSON.stringify(r));
-                })
-                .catch(e => {
-                  console.log(`Error: ${e.message}`);
-                });
-            }}
-          >
-            ChangeLayoutModal
-          </Button>
+          <ChangeLayoutModal ref={(r) => (this.changeLayoutModalRef = r)} />
           <Layer logicalLayout="ABNT_2" physicalLayout="ABNT" />
           <div style={{ height: 10 }} />
           <Layer logicalLayout="JIS" physicalLayout="JIS" />
