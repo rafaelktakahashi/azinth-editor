@@ -10,42 +10,21 @@ import ChangeLayoutModal from "./view/modal/changeLayoutModal";
 import KeyboardView from "./view/layout/KeyboardView";
 import Keyboard from "./model/Keyboard";
 
-const sampleKeyboard: Keyboard = {
-  alias: "Example Keyboard",
-  name: "1234567890",
-  logicalLayout: "ABNT_2",
-  physicalLayout: "ABNT",
-  modifiers: [
-    {
-      name: "Shift",
-      scancodes: ["2a", "3e"],
-    },
-    {
-      name: "AltGr",
-      scancodes: ["3a"],
-    },
-  ],
-  layers: [
-    {
-      alias: "Example layer",
-      modifiers: [],
-      remaps: [],
-    },
-  ],
-};
+import SampleLayout from "../../azinth-core/azinth.json";
+import Layout from "./model/Layout";
+import LayoutView from "./view/layout/LayoutView";
 
 const Index = () => {
-  const [kb, setKb] = React.useState(sampleKeyboard);
+  const [layout, setLayout] = React.useState<Layout>(SampleLayout as Layout);
   return (
     <div style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
       <MuiThemeProvider theme={Theme}>
         <StyledComponentsThemeProvider theme={Theme}>
           {/** To use a custom titlebar, wrap this view in it */}
-
-          <KeyboardView
-            keyboard={kb}
-            onKeyboardChanged={(k, _) => {
-              setKb(k);
+          <LayoutView
+            layout={layout}
+            onKeyboardChanged={(newLayout, index, type) => {
+              setLayout(newLayout);
             }}
           />
         </StyledComponentsThemeProvider>

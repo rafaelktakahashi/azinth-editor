@@ -12,7 +12,7 @@ interface Props {
   /**
    * This callback is invoked when the instance of Keyboard changes for some
    * reason. Note that modifier changes don't fire whenever the selection
-   * changes, only when the list of modifiers is changes.
+   * changes, only when the list of modifiers is changed.
    */
   onKeyboardChanged: (
     newObj: Keyboard,
@@ -29,7 +29,7 @@ interface State {
  * is given a modifier combination.
  */
 export default class KeyboardView extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     // Initialize state with no selected modifiers.
     this.state = {
@@ -120,7 +120,16 @@ const KeyboardTitle = ({ alias, name }: { alias: string; name: string }) => (
       {alias}
     </Typography>
     <div style={{ width: 10 }} />
-    <Typography variant="h2">{name}</Typography>
+    <Typography
+      variant="h4"
+      noWrap
+      style={{
+        color: "#808080",
+        fontFamily: "Consolas",
+      }}
+    >
+      {name}
+    </Typography>
   </div>
 );
 
