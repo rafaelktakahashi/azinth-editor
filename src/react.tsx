@@ -1,14 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import LayerView from "./view/layout/LayerView";
-import Titlebar from "./view/titlebar/Titlebar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
 import Theme from "./theme";
-import Button from "@material-ui/core/Button";
-import ChangeLayoutModal from "./view/modal/changeLayoutModal";
-import KeyboardView from "./view/layout/KeyboardView";
-import Keyboard from "./model/Keyboard";
 
 import SampleLayout from "../../azinth-core/azinth.json";
 import Layout from "./model/Layout";

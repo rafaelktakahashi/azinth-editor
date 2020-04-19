@@ -26,6 +26,7 @@ export default class LayoutView extends React.Component<Props, {}> {
       >
         {this.props.layout.keyboards.map((k, i) => (
           <KeyboardView
+            key={`keyboardview-${i}`}
             keyboard={k}
             onKeyboardChanged={(k, type) => {
               const newLayout: Layout = {

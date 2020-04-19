@@ -85,10 +85,11 @@ export default class LayerView extends React.Component<Props, State> {
         >
           {/** Render one key for each item in the physical layout */}
           {Object.keys(this.state.currentPhysicalLayout.keys).map(
-            (scancode) => {
+            (scancode, index) => {
               const key = this.state.currentPhysicalLayout.keys[scancode];
               return (
                 <KeyView
+                  key={`keyview-${index}`}
                   width={key.width}
                   height={key.height}
                   xOffset={key.xOffset}

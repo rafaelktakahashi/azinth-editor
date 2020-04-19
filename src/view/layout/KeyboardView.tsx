@@ -50,7 +50,7 @@ export default class KeyboardView extends React.Component<Props, State> {
         }}
       >
         <ChangeLayoutModal ref={(r) => (this.changeLayoutModal = r)} />
-        <Grid container>
+        <Grid container style={{ flexGrow: 0 }}>
           <Grid xs={10}>
             <KeyboardTitle
               alias={this.props.keyboard.alias}
