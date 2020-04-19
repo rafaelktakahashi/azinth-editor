@@ -9,6 +9,15 @@ import KeyboardModifier from "../../model/KeyboardModifier";
 
 interface Props {
   keyboard: Keyboard;
+  /**
+   * This callback is invoked when the instance of Keyboard changes for some
+   * reason. Note that modifier changes don't fire whenever the selection
+   * changes, only when the list of modifiers is changes.
+   */
+  onKeyboardChanged: (
+    newObj: Keyboard,
+    type: "layout" | "modifier" | "command"
+  ) => void;
 }
 
 interface State {
@@ -64,7 +73,12 @@ export default class KeyboardView extends React.Component<Props, State> {
                       this.props.keyboard.logicalLayout
                     )
                     .then((r) => {
-                      console.log(JSON.stringify(r, null, 2));
+                      const newKeyboard: Keyboard = {
+                        ...this.props.keyboard,
+                        logicalLayout: r.selectedLogicalLayout,
+                        physicalLayout: r.selectedPhysicalLayout,
+                      };
+                      this.props.onKeyboardChanged(newKeyboard, "layout");
                     })
                     .catch((e) => {
                       console.warn(`Error: ${e.message || e}`);
