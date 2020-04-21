@@ -42,9 +42,7 @@ export default class KeyView extends React.Component<Props> {
     }
     if (command.type === 'unicode') {
       const unicodeCommand = command as UnicodeCommand;
-      return unicodeCommand.codepoints
-        .map((n) => String.fromCodePoint(n))
-        .join('');
+      return String.fromCodePoint(...unicodeCommand.codepoints);
     }
     return '';
   }
@@ -100,7 +98,8 @@ export default class KeyView extends React.Component<Props> {
                 whiteSpace: 'nowrap',
                 lineBreak: 'strict',
                 textOverflow: 'clip',
-                fontFamily: 'Arial', // easier to read than Roboto for small text
+                fontFamily: 'Arial',
+                fontWeight: 'bold',
               }}
             >
               {this.textFromCommand(this.props.keyCommand)}
@@ -118,6 +117,9 @@ export default class KeyView extends React.Component<Props> {
                 lineBreak: 'strict',
                 textOverflow: 'clip',
                 fontFamily: 'Arial',
+                color: '#787878',
+                fontWeight: 'bold',
+                marginBottom: -1, // move the label slightly downwards
               }}
             >
               {this.props.bottomLabel}
