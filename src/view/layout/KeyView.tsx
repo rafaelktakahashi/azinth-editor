@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Typography } from "@material-ui/core";
 import KeystrokeCommand from "../../model/KeystrokeCommand";
+import UnicodeCommand from "../../model/KeystrokeCommands/UnicodeCommand";
 
 // This length is not configurable, unfortunately.
 export const UNIT_LENGTH = 35;
@@ -34,6 +35,19 @@ export default class KeyView extends React.Component<Props> {
     height: 1,
     bottomLabel: "",
   };
+
+  textFromCommand(command: KeystrokeCommand | null): string {
+    if (command === null) {
+      return "";
+    }
+    if (command.type === "unicode") {
+      const unicodeCommand = command as UnicodeCommand;
+      return unicodeCommand.codepoints
+        .map((n) => String.fromCodePoint(n))
+        .join("");
+    }
+    return "";
+  }
 
   renderRectangularKey(): JSX.Element {
     return (
@@ -80,6 +94,7 @@ export default class KeyView extends React.Component<Props> {
             <Typography
               style={{
                 flex: 1,
+                fontSize: 14,
                 margin: "auto",
                 textAlign: "center",
                 whiteSpace: "nowrap",
@@ -88,7 +103,7 @@ export default class KeyView extends React.Component<Props> {
                 fontFamily: "Arial", // easier to read than Roboto for small text
               }}
             >
-              {this.props.keyCommand?.scancode || ""}
+              {this.textFromCommand(this.props.keyCommand)}
             </Typography>
             <Typography
               style={{

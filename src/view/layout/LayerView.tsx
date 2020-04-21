@@ -11,14 +11,19 @@ import {
   LogicalLayout,
 } from "../../resources/logicalLayouts/index";
 import ChangeLayoutModal from "../modal/changeLayoutModal";
+import KeystrokeCommand from "../../model/KeystrokeCommand";
 
 interface Props {
   physicalLayout: PhysicalLayout;
   logicalLayout: LogicalLayout;
+  // Use null for an empty layer (a layer with no registered remaps).
+  remaps: KeystrokeCommand[] | null;
 }
 
 interface State {
+  // Dynamic; read from a json
   currentPhysicalLayout: any;
+  // Dynamic; read from a json
   currentLogicalLayout: any;
   /** Size of this component, based on the keys rendered in it. */
   dimensions: { width: number; height: number };
@@ -29,6 +34,15 @@ interface State {
  * given labels that depend on the logical layout.
  */
 export default class LayerView extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      currentPhysicalLayout: {},
+      currentLogicalLayout: {},
+      dimensions: { width: 0, height: 0 },
+    };
+  }
+
   // Derive the physical and logical layouts from their names.
   // Note that all objects are preloaded and getting them has little cost.
   static getDerivedStateFromProps(
@@ -87,6 +101,9 @@ export default class LayerView extends React.Component<Props, State> {
           {Object.keys(this.state.currentPhysicalLayout.keys).map(
             (scancode, index) => {
               const key = this.state.currentPhysicalLayout.keys[scancode];
+              const commandIndex = this.props.remaps?.findIndex(
+                (remap) => remap.scancode === scancode
+              );
               return (
                 <KeyView
                   key={`keyview-${index}`}
@@ -95,6 +112,11 @@ export default class LayerView extends React.Component<Props, State> {
                   xOffset={key.xOffset}
                   yOffset={key.yOffset}
                   bottomLabel={this.state.currentLogicalLayout.labels[scancode]}
+                  keyCommand={
+                    commandIndex === -1 || commandIndex === undefined
+                      ? null
+                      : this.props.remaps[commandIndex]
+                  }
                 />
               );
             }

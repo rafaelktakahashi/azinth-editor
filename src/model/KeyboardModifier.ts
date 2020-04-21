@@ -2,9 +2,8 @@ import Scancode from "./Scancode";
 
 export default interface KeyboardModifier {
   /**
-   * String that uniquely identifies the keyboard. In actuality this string
-   * identifies the input (as in, the USB input and such).
-   * Example: "\\\\?\\HID#VID_04D9&PID_A0F8&MI_00#8&84b8ce3&0&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}"
+   * Name of this modifier. Each layer uses only a list of modifier names to
+   * identify the modifier combination that triggers it.
    */
   name: string;
   /**

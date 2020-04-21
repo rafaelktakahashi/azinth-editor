@@ -6,6 +6,7 @@ import Keyboard from "../../model/Keyboard";
 import { Language } from "@material-ui/icons";
 import ModifierListView from "./ModifierListView";
 import KeyboardModifier from "../../model/KeyboardModifier";
+import Layer from "../../model/Layer";
 
 interface Props {
   keyboard: Keyboard;
@@ -38,7 +39,50 @@ export default class KeyboardView extends React.Component<Props, State> {
   }
   changeLayoutModal: ChangeLayoutModal | null = null;
 
+  /**
+   * Finds the layer corresponding to the modifier combination, and returns its
+   * index in this keyboard. If no layer matches, returns -1.
+   * @param modifiers Modifier combination to look for.
+   */
+  layerIndexFromModifiers(modifiers: KeyboardModifier[]): number {
+    // We could cache this result, but I don't want to optimize prematurely.
+    const layers = this.props.keyboard.layers;
+    // Loop through the layers looking for the correct one
+    for (var i = 0; i < layers.length; i++) {
+      const currentLayer = layers[i];
+      // The modifier combination must be exactly the same as described in the
+      // layer object. However, the layer describes its modifier combination in
+      // strings.
+      // Testing for same length, and then for presence of every modifier is
+      // enough to assert equality.
+      if (modifiers.length === currentLayer.modifiers.length) {
+        if (
+          modifiers.every((selectedModifier) => {
+            // Each pressed modifier is present in the layer's modifier list
+            return (
+              currentLayer.modifiers.findIndex(
+                (name) => name === selectedModifier.name
+              ) !== -1
+            );
+          })
+        ) {
+          return i;
+        }
+      }
+    }
+    // If we looped through every layer but didn't find the correct combination:
+    return -1;
+  }
+
   render(): JSX.Element {
+    const selectedLayerIndex = this.layerIndexFromModifiers(
+      this.state.selectedModifiers
+    );
+    const selectedLayer: Layer | null =
+      selectedLayerIndex === -1
+        ? null
+        : this.props.keyboard.layers[selectedLayerIndex];
+    console.log(`INDEX: ${selectedLayerIndex}`);
     return (
       <Paper
         style={{
@@ -102,6 +146,7 @@ export default class KeyboardView extends React.Component<Props, State> {
         <LayerView
           physicalLayout={this.props.keyboard.physicalLayout}
           logicalLayout={this.props.keyboard.logicalLayout}
+          remaps={selectedLayer !== null ? selectedLayer.remaps : null}
         />
       </Paper>
     );
