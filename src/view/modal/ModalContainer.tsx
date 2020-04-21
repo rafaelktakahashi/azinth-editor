@@ -1,6 +1,6 @@
-import * as React from "react";
-import styled from "styled-components";
-import { Container, Paper, Typography } from "@material-ui/core";
+import * as React from 'react';
+import styled from 'styled-components';
+import { Container, Paper, Typography } from '@material-ui/core';
 
 const ModalContainer = styled(Container)`
   background-color: transparent;
@@ -17,15 +17,15 @@ const ModalPaper = styled(Paper)`
 export default ({
   title,
   maxWidth,
-  children
+  children,
 }: {
   title: string;
-  maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
+  maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: JSX.Element | JSX.Element[];
 }) => (
-  <ModalContainer maxWidth={maxWidth || "sm"}>
+  <ModalContainer maxWidth={maxWidth || 'sm'}>
     <ModalPaper>
-      <Typography variant="h2" color="primary" style={{ marginBottom: 15 }}>
+      <Typography variant='h2' color='primary' style={{ marginBottom: 15 }}>
         {title}
       </Typography>
       {children}

@@ -1,9 +1,9 @@
-import * as React from "react";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import KeyboardModifier from "../../model/KeyboardModifier";
-import { Typography, withTheme } from "@material-ui/core";
-import { ThemedComponentProps } from "@material-ui/core/styles/withTheme";
+import * as React from 'react';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import KeyboardModifier from '../../model/KeyboardModifier';
+import { Typography, withTheme } from '@material-ui/core';
+import { ThemedComponentProps } from '@material-ui/core/styles/withTheme';
 
 interface Props {
   keyboardModifiers: KeyboardModifier[];
@@ -27,10 +27,11 @@ class ModifierListView extends React.Component<
     const theme = this.props.theme;
     return (
       <ToggleButtonGroup value={this.props.selectedKeyboardModifiers}>
-        {this.props.keyboardModifiers.map((m) => {
+        {this.props.keyboardModifiers.map((m, index) => {
           const isSelected = this.props.selectedKeyboardModifiers.includes(m);
           return (
             <ToggleButton
+              key={`modifier-toggle-${index}`}
               onClick={() => {
                 const newSelection: KeyboardModifier[] = isSelected
                   ? this.props.selectedKeyboardModifiers.filter(
@@ -39,13 +40,13 @@ class ModifierListView extends React.Component<
                   : this.props.selectedKeyboardModifiers.concat(m);
                 this.props.onSelectionChanged(newSelection, m);
               }}
-              color="primary"
+              color='primary'
               style={{
                 height: 25,
                 backgroundColor: isSelected
-                  ? theme.palette.primary.dark
+                  ? theme?.palette?.primary?.dark
                   : undefined,
-                color: isSelected ? "white" : undefined,
+                color: isSelected ? 'white' : undefined,
               }}
               value={m}
             >

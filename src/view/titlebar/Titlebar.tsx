@@ -1,7 +1,7 @@
-import * as React from "react";
-import styled from "styled-components";
-import { remote } from "electron";
-import Menubar from "./Menubar";
+import * as React from 'react';
+import styled from 'styled-components';
+import { remote } from 'electron';
+import Menubar from './Menubar';
 
 /**
  * IMPORTANT
@@ -43,7 +43,7 @@ const Title = styled.span`
   align-items: center;
   margin-left: 8px;
   overflow-x: hidden;
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   font-size: 12px;
   font-weight: 600;
   & span {
@@ -61,7 +61,7 @@ const HeaderButtonContainer = styled.div`
   top: 0;
   right: 0;
   height: 100%;
-  font-family: "Segoe MDL2 Assets";
+  font-family: 'Segoe MDL2 Assets';
   font-size: 10px;
   -webkit-app-region: no-drag;
 `;
@@ -110,10 +110,10 @@ interface Props {
 
 class Titlebar extends React.Component<Props> {
   componentDidMount() {
-    remote.getCurrentWindow().addListener("maximize", () => this.forceUpdate());
+    remote.getCurrentWindow().addListener('maximize', () => this.forceUpdate());
     remote
       .getCurrentWindow()
-      .addListener("unmaximize", () => this.forceUpdate());
+      .addListener('unmaximize', () => this.forceUpdate());
   }
   render() {
     const isMaximized = remote.getCurrentWindow().isMaximized();
@@ -130,14 +130,14 @@ class Titlebar extends React.Component<Props> {
             <HeaderButtonMin
               onClick={() => remote.getCurrentWindow().minimize()}
             >
-              <span>{"\uE921"}</span>
+              <span>{'\uE921'}</span>
             </HeaderButtonMin>
 
             {!isMaximized && (
               <HeaderButtonMaxRestore
                 onClick={() => remote.getCurrentWindow().maximize()}
               >
-                <span>{"\uE922"}</span>
+                <span>{'\uE922'}</span>
               </HeaderButtonMaxRestore>
             )}
 
@@ -145,14 +145,14 @@ class Titlebar extends React.Component<Props> {
               <HeaderButtonMaxRestore
                 onClick={() => remote.getCurrentWindow().unmaximize()}
               >
-                <span>{"\uE923"}</span>
+                <span>{'\uE923'}</span>
               </HeaderButtonMaxRestore>
             )}
 
             <HeaderButtonClose
               onClick={() => remote.getCurrentWindow().close()}
             >
-              <span>{"\uE8BB"}</span>
+              <span>{'\uE8BB'}</span>
             </HeaderButtonClose>
           </HeaderButtonContainer>
         </Headerbar>

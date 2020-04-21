@@ -1,12 +1,12 @@
-import * as React from "react";
-import LayerView from "./LayerView";
-import { Paper, Typography, Grid, Button, Divider } from "@material-ui/core";
-import ChangeLayoutModal from "../modal/ChangeLayoutModal";
-import Keyboard from "../../model/Keyboard";
-import { Language } from "@material-ui/icons";
-import ModifierListView from "./ModifierListView";
-import KeyboardModifier from "../../model/KeyboardModifier";
-import Layer from "../../model/Layer";
+import * as React from 'react';
+import LayerView from './LayerView';
+import { Paper, Typography, Grid, Button, Divider } from '@material-ui/core';
+import ChangeLayoutModal from '../modal/ChangeLayoutModal';
+import Keyboard from '../../model/Keyboard';
+import { Language } from '@material-ui/icons';
+import ModifierListView from './ModifierListView';
+import KeyboardModifier from '../../model/KeyboardModifier';
+import Layer from '../../model/Layer';
 
 interface Props {
   keyboard: Keyboard;
@@ -17,7 +17,7 @@ interface Props {
    */
   onKeyboardChanged: (
     newObj: Keyboard,
-    type: "layout" | "modifier" | "command"
+    type: 'layout' | 'modifier' | 'command'
   ) => void;
 }
 
@@ -82,31 +82,30 @@ export default class KeyboardView extends React.Component<Props, State> {
       selectedLayerIndex === -1
         ? null
         : this.props.keyboard.layers[selectedLayerIndex];
-    console.log(`INDEX: ${selectedLayerIndex}`);
     return (
       <Paper
         style={{
-          position: "relative",
-          display: "inline-block",
+          position: 'relative',
+          display: 'inline-block',
           margin: 10,
           padding: 10,
-          backgroundColor: "#e8e8e8",
+          backgroundColor: '#e8e8e8',
         }}
       >
         <ChangeLayoutModal ref={(r) => (this.changeLayoutModal = r)} />
         <Grid container style={{ flexGrow: 0 }}>
-          <Grid xs={10}>
+          <Grid item xs={10}>
             <KeyboardTitle
               alias={this.props.keyboard.alias}
               name={this.props.keyboard.name}
             />
           </Grid>
-          <Grid xs={2}>
+          <Grid item xs={2}>
             <div
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
               <ChangeLayoutButton
@@ -122,7 +121,7 @@ export default class KeyboardView extends React.Component<Props, State> {
                         logicalLayout: r.selectedLogicalLayout,
                         physicalLayout: r.selectedPhysicalLayout,
                       };
-                      this.props.onKeyboardChanged(newKeyboard, "layout");
+                      this.props.onKeyboardChanged(newKeyboard, 'layout');
                     })
                     .catch((e) => {
                       console.warn(`Error: ${e.message || e}`);
@@ -131,7 +130,7 @@ export default class KeyboardView extends React.Component<Props, State> {
               />
             </div>
           </Grid>
-          <Grid xs={12} style={{ paddingTop: 10, paddingBottom: 10 }}>
+          <Grid item xs={12} style={{ paddingTop: 10, paddingBottom: 10 }}>
             <ModifierListView
               keyboardModifiers={this.props.keyboard.modifiers}
               selectedKeyboardModifiers={this.state.selectedModifiers}
@@ -156,21 +155,21 @@ export default class KeyboardView extends React.Component<Props, State> {
 const KeyboardTitle = ({ alias, name }: { alias: string; name: string }) => (
   <div
     style={{
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "flex-end",
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'flex-end',
     }}
   >
-    <Typography variant="h1" color="primary">
+    <Typography variant='h1' color='primary'>
       {alias}
     </Typography>
     <div style={{ width: 10 }} />
     <Typography
-      variant="h4"
+      variant='h4'
       noWrap
       style={{
-        color: "#808080",
-        fontFamily: "Consolas",
+        color: '#808080',
+        fontFamily: 'Consolas',
       }}
     >
       {name}
@@ -189,6 +188,6 @@ const ChangeLayoutButton = ({ onClick }: { onClick: () => void }) => (
       maxWidth: 30,
     }}
   >
-    <Language fontSize="small" />
+    <Language fontSize='small' />
   </Button>
 );

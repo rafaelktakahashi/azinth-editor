@@ -1,4 +1,4 @@
-import Scancode from "./Scancode";
+import Scancode from './Scancode';
 
 export default interface KeyboardModifier {
   /**

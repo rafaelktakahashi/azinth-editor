@@ -1,5 +1,5 @@
-import KeystrokeCommand from "../KeystrokeCommand";
-import Scancode from "../Scancode";
+import KeystrokeCommand from '../KeystrokeCommand';
+import Scancode from '../Scancode';
 
 export default class UnicodeCommand implements KeystrokeCommand {
   constructor(
@@ -7,12 +7,12 @@ export default class UnicodeCommand implements KeystrokeCommand {
     codepoints: number[],
     triggerOnRepeat: boolean
   ) {
-    this.type = "unicode";
+    this.type = 'unicode';
     this.scancode = scancode;
     this.codepoints = codepoints;
     this.triggerOnRepeat = triggerOnRepeat;
   }
-  type: "unicode";
+  type: 'unicode';
   scancode: Scancode;
   triggerOnRepeat: boolean;
   /**

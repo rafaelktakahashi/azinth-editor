@@ -1,6 +1,6 @@
-import Scancode from "./Scancode";
+import Scancode from './Scancode';
 
-type KeystrokeType = "unicode" | "macro" | "deadkey" | "executable";
+type KeystrokeType = 'unicode' | 'macro' | 'deadkey' | 'executable';
 
 /**
  * Interface for all keystroke commands. Each and every keystroke has a scancode

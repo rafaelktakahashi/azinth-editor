@@ -1,14 +1,14 @@
-import * as React from "react";
-import KeyboardView from "./KeyboardView";
-import Layout from "../../model/Layout";
-import { Container } from "@material-ui/core";
+import * as React from 'react';
+import KeyboardView from './KeyboardView';
+import Layout from '../../model/Layout';
+import { Container } from '@material-ui/core';
 
 interface Props {
   layout: Layout;
   onKeyboardChanged: (
     newLayout: Layout,
     index: number,
-    type: "layout" | "modifier" | "command"
+    type: 'layout' | 'modifier' | 'command'
   ) => void;
 }
 
@@ -20,8 +20,8 @@ export default class LayoutView extends React.Component<Props, {}> {
     return (
       <Container
         style={{
-          backgroundColor: "transparent",
-          scrollBehavior: "smooth",
+          backgroundColor: 'transparent',
+          scrollBehavior: 'smooth',
         }}
       >
         {this.props.layout.keyboards.map((k, i) => (

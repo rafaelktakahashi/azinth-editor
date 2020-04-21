@@ -1,5 +1,5 @@
-import KeystrokeCommand from "../KeystrokeCommand";
-import Scancode from "../Scancode";
+import KeystrokeCommand from '../KeystrokeCommand';
+import Scancode from '../Scancode';
 
 /**
  * Represents one dead key replacement.
@@ -16,13 +16,13 @@ export default class DeadKeyCommand implements KeystrokeCommand {
     replacements: Replacement[],
     triggerOnRepeat: boolean
   ) {
-    this.type = "deadkey";
+    this.type = 'deadkey';
     this.scancode = scancode;
     this.codepoints = codepoints;
     this.replacements = replacements;
     this.triggerOnRepeat = triggerOnRepeat;
   }
-  type: "deadkey";
+  type: 'deadkey';
   scancode: string;
   triggerOnRepeat: boolean;
   /**

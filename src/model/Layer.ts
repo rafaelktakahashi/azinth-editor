@@ -1,4 +1,4 @@
-import KeystrokeCommand from "./KeystrokeCommand";
+import KeystrokeCommand from './KeystrokeCommand';
 
 /**
  * Layer of a keyboard layout. Each layer is activated by a particular combination

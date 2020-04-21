@@ -1,7 +1,7 @@
-import Layer from "./Layer";
-import { PhysicalLayout } from "../resources/physicalLayouts";
-import { LogicalLayout } from "../resources/logicalLayouts";
-import KeyboardModifier from "./KeyboardModifier";
+import Layer from './Layer';
+import { PhysicalLayout } from '../resources/physicalLayouts';
+import { LogicalLayout } from '../resources/logicalLayouts';
+import KeyboardModifier from './KeyboardModifier';
 
 export default interface Keyboard {
   name: string;

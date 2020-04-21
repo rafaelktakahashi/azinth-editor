@@ -1,17 +1,17 @@
-import ANSI from "../../resources/physicalLayouts/ANSI.azphl.json";
-import ISO from "../../resources/physicalLayouts/ISO.azphl.json";
-import ABNT from "../../resources/physicalLayouts/ABNT.azphl.json";
-import JIS from "../../resources/physicalLayouts/JIS.azphl.json";
-import Dubeolsik from "../../resources/physicalLayouts/Dubeolsik.azphl.json";
+import ANSI from '../../resources/physicalLayouts/ANSI.azphl.json';
+import ISO from '../../resources/physicalLayouts/ISO.azphl.json';
+import ABNT from '../../resources/physicalLayouts/ABNT.azphl.json';
+import JIS from '../../resources/physicalLayouts/JIS.azphl.json';
+import Dubeolsik from '../../resources/physicalLayouts/Dubeolsik.azphl.json';
 
-export type PhysicalLayout = "ANSI" | "ISO" | "ABNT" | "JIS" | "Dubeolsik";
+export type PhysicalLayout = 'ANSI' | 'ISO' | 'ABNT' | 'JIS' | 'Dubeolsik';
 
 const physLayouts = {
   ANSI: ANSI,
   ISO: ISO,
   ABNT: ABNT,
   JIS: JIS,
-  Dubeolsik: Dubeolsik
+  Dubeolsik: Dubeolsik,
 };
 
 const physLayoutsList = Object.keys(physLayouts);

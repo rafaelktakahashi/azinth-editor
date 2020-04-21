@@ -1,5 +1,5 @@
-import KeystrokeCommand from "../KeystrokeCommand";
-import Scancode from "../Scancode";
+import KeystrokeCommand from '../KeystrokeCommand';
+import Scancode from '../Scancode';
 
 export default class ExecutableCommand implements KeystrokeCommand {
   /** Strict mode doesn't let us use `arguments` as a variable name. */
@@ -7,8 +7,9 @@ export default class ExecutableCommand implements KeystrokeCommand {
     this.scancode = scancode;
     this.path = path;
     this.arguments = args;
+    this.type = 'executable';
   }
-  type: "executable";
+  type: 'executable';
   scancode: Scancode;
   /** Path to the executable to open. */
   path: string;

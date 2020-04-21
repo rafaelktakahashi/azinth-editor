@@ -1,17 +1,17 @@
-import * as React from "react";
-import KeyView, { UNIT_LENGTH } from "./KeyView";
-import { Container, Paper, Button } from "@material-ui/core";
-import { Language } from "@material-ui/icons";
+import * as React from 'react';
+import KeyView, { UNIT_LENGTH } from './KeyView';
+import { Container, Paper, Button } from '@material-ui/core';
+import { Language } from '@material-ui/icons';
 import {
   getPhysicalLayout,
   PhysicalLayout,
-} from "../../resources/physicalLayouts/index";
+} from '../../resources/physicalLayouts/index';
 import {
   getLogicalLayout,
   LogicalLayout,
-} from "../../resources/logicalLayouts/index";
-import ChangeLayoutModal from "../modal/changeLayoutModal";
-import KeystrokeCommand from "../../model/KeystrokeCommand";
+} from '../../resources/logicalLayouts/index';
+import ChangeLayoutModal from '../modal/changeLayoutModal';
+import KeystrokeCommand from '../../model/KeystrokeCommand';
 
 interface Props {
   physicalLayout: PhysicalLayout;
@@ -84,8 +84,8 @@ export default class LayerView extends React.Component<Props, State> {
     return (
       <div
         style={{
-          position: "relative",
-          overflow: "auto",
+          position: 'relative',
+          overflow: 'auto',
           maxWidth: this.state.dimensions.width,
         }}
       >
@@ -94,7 +94,7 @@ export default class LayerView extends React.Component<Props, State> {
           style={{
             height: this.state.dimensions.height,
             width: this.state.dimensions.width,
-            position: "relative",
+            position: 'relative',
           }}
         >
           {/** Render one key for each item in the physical layout */}
@@ -114,8 +114,8 @@ export default class LayerView extends React.Component<Props, State> {
                   bottomLabel={this.state.currentLogicalLayout.labels[scancode]}
                   keyCommand={
                     commandIndex === -1 || commandIndex === undefined
-                      ? null
-                      : this.props.remaps[commandIndex]
+                      ? undefined
+                      : this.props.remaps?.[commandIndex]
                   }
                 />
               );

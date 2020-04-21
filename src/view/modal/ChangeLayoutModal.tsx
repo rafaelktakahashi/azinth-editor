@@ -1,40 +1,40 @@
-import * as React from "react";
-import Modal from "@material-ui/core/Modal";
-import ModalContainer from "./ModalContainer";
+import * as React from 'react';
+import Modal from '@material-ui/core/Modal';
+import ModalContainer from './ModalContainer';
 import {
   Select,
   MenuItem,
   InputLabel,
   FormControl,
   Grid,
-  Button
-} from "@material-ui/core";
+  Button,
+} from '@material-ui/core';
 import {
   PhysicalLayout,
-  getPhysicalLayoutsList
-} from "../../resources/physicalLayouts";
+  getPhysicalLayoutsList,
+} from '../../resources/physicalLayouts';
 import {
   LogicalLayout,
-  getLogicalLayoutsList
-} from "../../resources/logicalLayouts";
+  getLogicalLayoutsList,
+} from '../../resources/logicalLayouts';
 
 interface ChangeLayoutModalResponse {
-  selectedPhysicalLayout?: PhysicalLayout;
-  selectedLogicalLayout?: LogicalLayout;
+  selectedPhysicalLayout: PhysicalLayout;
+  selectedLogicalLayout: LogicalLayout;
 }
 
 interface State {
   open: boolean;
-  selectedPhysicalLayout: PhysicalLayout | "";
-  selectedLogicalLayout: LogicalLayout | "";
+  selectedPhysicalLayout: PhysicalLayout | '';
+  selectedLogicalLayout: LogicalLayout | '';
 }
 export default class ChangeLayoutModal extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
       open: false,
-      selectedPhysicalLayout: "",
-      selectedLogicalLayout: ""
+      selectedPhysicalLayout: '',
+      selectedLogicalLayout: '',
     };
   }
 
@@ -48,7 +48,7 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
     this.setState({
       open: true,
       selectedPhysicalLayout: currentPhysicalLayout,
-      selectedLogicalLayout: currentLogicalLayout
+      selectedLogicalLayout: currentLogicalLayout,
     });
 
     return new Promise<ChangeLayoutModalResponse>(
@@ -65,7 +65,7 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
   closeModal(canceledReason?: string) {
     this.setState(
       {
-        open: false
+        open: false,
       },
       () => {
         if (canceledReason) {
@@ -75,13 +75,13 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
           // Resolve with a response object
           this.resolver?.({
             selectedLogicalLayout:
-              this.state.selectedLogicalLayout === ""
-                ? null
+              this.state.selectedLogicalLayout === ''
+                ? 'US' // Avoid defaulting, it's a sign that something's wrong.
                 : this.state.selectedLogicalLayout,
             selectedPhysicalLayout:
-              this.state.selectedPhysicalLayout === ""
-                ? null
-                : this.state.selectedPhysicalLayout
+              this.state.selectedPhysicalLayout === ''
+                ? 'ANSI'
+                : this.state.selectedPhysicalLayout,
           });
         }
         this.resolver = null;
@@ -96,57 +96,65 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
         open={this.state.open}
         onClose={(_, reason) => this.closeModal(reason)}
       >
-        <ModalContainer maxWidth="xs" title="Change Layout">
+        <ModalContainer maxWidth='xs' title='Change Layout'>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormControl>
-                <InputLabel id="physical-layout-label">
+                <InputLabel id='physical-layout-label'>
                   Physical Layout
                 </InputLabel>
                 <Select
-                  labelId="physical-layout-label"
-                  id="physical-layout-select"
+                  labelId='physical-layout-label'
+                  id='physical-layout-select'
                   style={{ minWidth: 170 }}
                   value={this.state.selectedPhysicalLayout}
                   onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                     this.setState({
                       selectedPhysicalLayout: event.target
-                        .value as PhysicalLayout
+                        .value as PhysicalLayout,
                     });
                   }}
                 >
-                  {getPhysicalLayoutsList().map(ph => (
-                    <MenuItem value={ph}>{ph}</MenuItem>
+                  {getPhysicalLayoutsList().map((ph, index) => (
+                    <MenuItem
+                      key={`physical-layout-option-${index}`}
+                      value={ph}
+                    >
+                      {ph}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl>
-                <InputLabel id="logical-layout-label">
+                <InputLabel id='logical-layout-label'>
                   Logical Layout
                 </InputLabel>
                 <Select
-                  labelId="logical-layout-label"
-                  id="logical-layout-select"
+                  labelId='logical-layout-label'
+                  id='logical-layout-select'
                   style={{ minWidth: 170 }}
                   value={this.state.selectedLogicalLayout}
                   onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                     this.setState({
-                      selectedLogicalLayout: event.target.value as LogicalLayout
+                      selectedLogicalLayout: event.target
+                        .value as LogicalLayout,
                     });
                   }}
                 >
-                  {getLogicalLayoutsList().map(lg => (
-                    <MenuItem value={lg}>{lg}</MenuItem>
+                  {getLogicalLayoutsList().map((lg, index) => (
+                    <MenuItem key={`logical-layout-option-${index}`} value={lg}>
+                      {lg}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Button
-                variant="contained"
-                color="primary"
+                variant='contained'
+                color='primary'
                 onClick={() => {
                   this.closeModal();
                 }}

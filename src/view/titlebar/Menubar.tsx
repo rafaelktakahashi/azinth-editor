@@ -1,8 +1,8 @@
-import * as React from "react";
-import { webFrame } from "electron";
-import styled from "styled-components";
-import Menu from "@material-ui/core/Menu";
-import { MenuItem } from "@material-ui/core";
+import * as React from 'react';
+import { webFrame } from 'electron';
+import styled from 'styled-components';
+import Menu from '@material-ui/core/Menu';
+import { MenuItem } from '@material-ui/core';
 
 const Container = styled.div`
   display: flex;
@@ -22,26 +22,29 @@ const MenuButton = styled.div`
   & span {
     line-height: 2.5;
     font-size: 13px;
-    font-family: "Segoe UI";
+    font-family: 'Segoe UI';
     user-select: none;
   }
 `;
 
-export default class Menubar extends React.Component<{}> {
+export default class Menubar extends React.Component<
+  {},
+  { activeMenuRef: any; activeMenu: string }
+> {
   state = {
-    activeMenuRef: null,
-    activeMenu: "",
+    activeMenuRef: null as any,
+    activeMenu: '',
   };
 
   closeMenu(): void {
     this.setState({
       activeMenuRef: null,
-      activeMenu: "",
+      activeMenu: '',
     });
   }
 
   isOpen(menuName: string): boolean {
-    return (menuName || "").localeCompare(this.state.activeMenu) === 0;
+    return (menuName || '').localeCompare(this.state.activeMenu) === 0;
   }
 
   listenerZoomIn() {
@@ -61,7 +64,7 @@ export default class Menubar extends React.Component<{}> {
           onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "file-menu",
+              activeMenu: 'file-menu',
             })
           }
         >
@@ -71,7 +74,7 @@ export default class Menubar extends React.Component<{}> {
           onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "edit-menu",
+              activeMenu: 'edit-menu',
             })
           }
         >
@@ -81,7 +84,7 @@ export default class Menubar extends React.Component<{}> {
           onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "view-menu",
+              activeMenu: 'view-menu',
             })
           }
         >
@@ -91,7 +94,7 @@ export default class Menubar extends React.Component<{}> {
           onClick={(event) =>
             this.setState({
               activeMenuRef: event.currentTarget,
-              activeMenu: "about-menu",
+              activeMenu: 'about-menu',
             })
           }
         >
@@ -100,30 +103,30 @@ export default class Menubar extends React.Component<{}> {
 
         {/** Menu components with actions */}
         <Menu
-          id="file-menu"
+          id='file-menu'
           anchorEl={this.state.activeMenuRef}
           keepMounted
-          open={this.isOpen("file-menu")}
+          open={this.isOpen('file-menu')}
           onClose={this.closeMenu.bind(this)}
         >
           <MenuItem>New Layout</MenuItem>
         </Menu>
 
         <Menu
-          id="edit-menu"
+          id='edit-menu'
           anchorEl={this.state.activeMenuRef}
           keepMounted
-          open={this.isOpen("edit-menu")}
+          open={this.isOpen('edit-menu')}
           onClose={this.closeMenu.bind(this)}
         >
           <MenuItem>Add Keyboard</MenuItem>
         </Menu>
 
         <Menu
-          id="view-menu"
+          id='view-menu'
           anchorEl={this.state.activeMenuRef}
           keepMounted
-          open={this.isOpen("view-menu")}
+          open={this.isOpen('view-menu')}
           onClose={this.closeMenu.bind(this)}
         >
           <MenuItem onClick={this.listenerZoomIn.bind(this)}>Zoom In</MenuItem>
@@ -133,10 +136,10 @@ export default class Menubar extends React.Component<{}> {
         </Menu>
 
         <Menu
-          id="about-menu"
+          id='about-menu'
           anchorEl={this.state.activeMenuRef}
           keepMounted
-          open={this.isOpen("about-menu")}
+          open={this.isOpen('about-menu')}
           onClose={this.closeMenu.bind(this)}
         >
           <MenuItem>About Azinth Editor</MenuItem>
