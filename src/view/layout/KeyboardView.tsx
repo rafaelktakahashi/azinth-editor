@@ -7,6 +7,7 @@ import { Language } from '@material-ui/icons';
 import ModifierListView from './ModifierListView';
 import KeyboardModifier from '../../model/KeyboardModifier';
 import Layer from '../../model/Layer';
+import ModifiersModal from '../modal/ModifiersModal';
 
 interface Props {
   keyboard: Keyboard;
@@ -37,7 +38,10 @@ export default class KeyboardView extends React.Component<Props, State> {
       selectedModifiers: [],
     };
   }
+  // Reference to a modal for changing layout
   changeLayoutModal: ChangeLayoutModal | null = null;
+  // Reference to a modal for editing modifiers
+  modifiersModal: ModifiersModal | null = null;
 
   /**
    * Finds the layer corresponding to the modifier combination, and returns its
@@ -93,6 +97,7 @@ export default class KeyboardView extends React.Component<Props, State> {
         }}
       >
         <ChangeLayoutModal ref={(r) => (this.changeLayoutModal = r)} />
+        <ModifiersModal ref={(r) => (this.modifiersModal = r)} />
         <Grid container style={{ flexGrow: 0 }}>
           <Grid item xs={10}>
             <KeyboardTitle
@@ -138,6 +143,10 @@ export default class KeyboardView extends React.Component<Props, State> {
                 this.setState({
                   selectedModifiers: newSelection,
                 });
+              }}
+              onEditClicked={() => {
+                // TODO: Get the result of this modal.
+                this.modifiersModal?.openModal(this.props.keyboard);
               }}
             />
           </Grid>
