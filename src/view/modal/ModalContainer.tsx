@@ -1,6 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Container, Paper, Typography } from '@material-ui/core';
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  IconButton,
+} from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 
 const ModalContainer = styled(Container)`
   background-color: transparent;
@@ -16,18 +23,37 @@ const ModalPaper = styled(Paper)`
 
 export default ({
   title,
+  onClose,
   maxWidth,
   children,
 }: {
   title: string;
+  onClose?: () => void;
   maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: JSX.Element | JSX.Element[];
 }) => (
   <ModalContainer maxWidth={maxWidth || 'sm'}>
     <ModalPaper>
-      <Typography variant='h2' color='primary' style={{ marginBottom: 15 }}>
-        {title}
-      </Typography>
+      <Box
+        style={{
+          display: 'flex',
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignContent: 'middle',
+        }}
+      >
+        <Typography variant='h2' color='primary' style={{ marginBottom: 15 }}>
+          {title}
+        </Typography>
+        <IconButton
+          onClick={() => {
+            onClose?.();
+          }}
+        >
+          <Close />
+        </IconButton>
+      </Box>
       {children}
     </ModalPaper>
   </ModalContainer>

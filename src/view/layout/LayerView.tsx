@@ -10,7 +10,7 @@ import {
   getLogicalLayout,
   LogicalLayout,
 } from '../../resources/logicalLayouts/index';
-import ChangeLayoutModal from '../modal/changeLayoutModal';
+import ChangeLayoutModal from '../modal/ChangeLayoutModal';
 import KeystrokeCommand from '../../model/KeystrokeCommand';
 
 interface Props {

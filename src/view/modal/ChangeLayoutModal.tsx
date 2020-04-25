@@ -96,7 +96,13 @@ export default class ChangeLayoutModal extends React.Component<{}, State> {
         open={this.state.open}
         onClose={(_, reason) => this.closeModal(reason)}
       >
-        <ModalContainer maxWidth='xs' title='Change Layout'>
+        <ModalContainer
+          maxWidth='xs'
+          title='Change Layout'
+          onClose={() => {
+            this.closeModal('closeButton');
+          }}
+        >
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormControl>
