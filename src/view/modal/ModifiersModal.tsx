@@ -109,7 +109,7 @@ export default class ModifiersModal extends React.Component<{}, State> {
           }}
         >
           <TableContainer component={Paper}>
-            <Table>
+            <Table style={{ tableLayout: 'fixed' }}>
               <TableHead>
                 <TableCell>Name</TableCell>
                 <TableCell>Keys</TableCell>
@@ -122,19 +122,16 @@ export default class ModifiersModal extends React.Component<{}, State> {
                       <ScancodeSet
                         scancodes={mod.scancodes}
                         labels={getLogicalLayout(this.state.layout)?.labels}
-                        onDelete={(scIndex: number): void => {
-                          const newModList = [...this.state.modifiers];
-                          newModList[i].scancodes = this.state.modifiers[
-                            i
-                          ].scancodes
-                            .slice(0, scIndex)
-                            .concat(
-                              this.state.modifiers[i].scancodes.slice(
-                                scIndex + 1
-                              )
-                            );
+                        onChange={(newScancodes) => {
+                          // Change the modifiers list to contain the new
+                          // scancodes.
+                          let newModifiers = [...this.state.modifiers];
+                          newModifiers[i] = {
+                            ...this.state.modifiers[i],
+                            scancodes: newScancodes,
+                          };
                           this.setState({
-                            modifiers: newModList,
+                            modifiers: newModifiers,
                           });
                         }}
                       />
@@ -150,11 +147,15 @@ export default class ModifiersModal extends React.Component<{}, State> {
   }
 }
 
+// TODO: Implement changeable names. Because modifiers are identified by names,
+// that implies changing the rest of the keyboard object.
+
+// TODO: Allow for adding new scancodes
 const ScancodeSet: React.FunctionComponent<{
   scancodes: Scancode[];
   labels: any;
-  onDelete: (index: number) => void;
-}> = ({ scancodes, labels, onDelete }) => {
+  onChange: (newScancodes: Scancode[]) => void;
+}> = ({ scancodes, labels, onChange }) => {
   return (
     <Box style={{ display: 'flex', flexDirection: 'row' }}>
       {scancodes.map((sc, i) => {
@@ -164,7 +165,14 @@ const ScancodeSet: React.FunctionComponent<{
           <Chip
             label={text}
             key={`scancode-chip-${i}`}
-            onDelete={() => onDelete(i)}
+            onDelete={() => {
+              // Call onChange with an array of scancodes that doesn't have the
+              // element at index i.
+              const newScancodes = scancodes
+                .slice(0, i)
+                .concat(scancodes.slice(i + 1));
+              onChange(newScancodes);
+            }}
             style={{ marginLeft: 5, marginRight: 5 }}
           />
         );

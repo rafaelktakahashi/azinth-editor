@@ -45,7 +45,10 @@ class ModifierListView extends React.Component<
                 }}
                 color='primary'
                 style={{
-                  height: 25,
+                  paddingLeft: 5,
+                  paddingRight: 5,
+                  paddingTop: 0,
+                  paddingBottom: 0,
                   backgroundColor: isSelected
                     ? theme?.palette?.primary?.dark
                     : undefined,
