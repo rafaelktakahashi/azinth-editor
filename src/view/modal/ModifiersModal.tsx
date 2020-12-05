@@ -11,6 +11,7 @@ import {
   TableRow,
   Box,
   Chip,
+  Button,
 } from '@material-ui/core';
 import ModalContainer from './ModalContainer';
 import KeyboardModifier from '../../model/KeyboardModifier';
@@ -20,6 +21,8 @@ import {
   LogicalLayout,
   getLogicalLayout,
 } from '../../resources/logicalLayouts';
+import { Add as AddIcon } from '@material-ui/icons';
+import ModifiersNewModifierModal from './ModifiersNewModifierModal';
 
 type ModifiersModalResponse =
   | {
@@ -46,6 +49,9 @@ export default class ModifiersModal extends React.Component<{}, State> {
       layout: 'US', // Default, should be properly set later.
     };
   }
+
+  // Reference to a modal for adding a new modifier.
+  modifiersNewModifierModal: ModifiersNewModifierModal | null = null;
 
   resolver: null | ((arg0: ModifiersModalResponse) => void) = null;
   rejecter: null | ((arg0: Error) => void) = null;
@@ -108,6 +114,29 @@ export default class ModifiersModal extends React.Component<{}, State> {
             this.closeModal('closeButton');
           }}
         >
+          <ModifiersNewModifierModal
+            ref={(r) => (this.modifiersNewModifierModal = r)}
+          />
+          <Button
+            variant='contained'
+            color='primary'
+            endIcon={<AddIcon />}
+            onClick={() => {
+              this.modifiersNewModifierModal?.openModal()?.then((r) => {
+                const newModifiers = this.state.modifiers.concat([
+                  {
+                    name: r.newModifierName,
+                    scancodes: [],
+                  },
+                ]);
+                this.setState({
+                  modifiers: newModifiers,
+                });
+              });
+            }}
+          >
+            Add Modifier
+          </Button>
           <TableContainer component={Paper}>
             <Table style={{ tableLayout: 'fixed' }}>
               <TableHead>
