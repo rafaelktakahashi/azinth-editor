@@ -23,6 +23,7 @@ import {
 } from '../../resources/logicalLayouts';
 import { Add as AddIcon } from '@material-ui/icons';
 import ModifiersNewModifierModal from './ModifiersNewModifierModal';
+import ModifiersNewScancodeModal from './ModifiersNewScancodeModal';
 
 type ModifiersModalResponse =
   | {
@@ -52,6 +53,9 @@ export default class ModifiersModal extends React.Component<{}, State> {
 
   // Reference to a modal for adding a new modifier.
   modifiersNewModifierModal: ModifiersNewModifierModal | null = null;
+
+  // Reference to a modal for adding a scancode to an existing modifier.
+  modifiersNewScancodeModal: ModifiersNewScancodeModal | null = null;
 
   resolver: null | ((arg0: ModifiersModalResponse) => void) = null;
   rejecter: null | ((arg0: Error) => void) = null;
@@ -101,6 +105,27 @@ export default class ModifiersModal extends React.Component<{}, State> {
     );
   }
 
+  /// Callback for each modifier's 'add' button.
+  onAddScancodePressed(index: number) {
+    // Obtain the new scancode from a prompt.
+    this.modifiersNewScancodeModal?.openModal?.().then((sc) => {
+      // Obtain the current scancodes, and make a new list that also contains
+      // the new scancode.
+      const newScancodes: Scancode[] = this.state.modifiers[
+        index
+      ].scancodes.concat([sc.newScancode]);
+      // Make a new list of modifiers to replace the current one in the state.
+      let newModifiers = [...this.state.modifiers];
+      newModifiers[index] = {
+        ...this.state.modifiers[index],
+        scancodes: newScancodes,
+      };
+      this.setState({
+        modifiers: newModifiers,
+      });
+    });
+  }
+
   render(): JSX.Element {
     return (
       <Modal
@@ -116,6 +141,10 @@ export default class ModifiersModal extends React.Component<{}, State> {
         >
           <ModifiersNewModifierModal
             ref={(r) => (this.modifiersNewModifierModal = r)}
+          />
+          <ModifiersNewScancodeModal
+            ref={(r) => (this.modifiersNewScancodeModal = r)}
+            scancodeLabels={getLogicalLayout(this.state.layout)?.labels}
           />
           <Button
             variant='contained'
@@ -163,6 +192,9 @@ export default class ModifiersModal extends React.Component<{}, State> {
                             modifiers: newModifiers,
                           });
                         }}
+                        onAddScancodePressed={() =>
+                          this.onAddScancodePressed(i)
+                        }
                       />
                     </TableCell>
                   </TableRow>
@@ -179,33 +211,50 @@ export default class ModifiersModal extends React.Component<{}, State> {
 // TODO: Implement changeable names. Because modifiers are identified by names,
 // that implies changing the rest of the keyboard object.
 
-// TODO: Allow for adding new scancodes
+// This renders as a collection of scancodes, to render the scancodes associated
+// with a modifier.
 const ScancodeSet: React.FunctionComponent<{
   scancodes: Scancode[];
-  labels: any;
+  labels: { [key: string]: string };
   onChange: (newScancodes: Scancode[]) => void;
-}> = ({ scancodes, labels, onChange }) => {
+  onAddScancodePressed: () => void;
+}> = ({ scancodes, labels, onChange, onAddScancodePressed }) => {
+  // Button to add after the scancodes.
+  const addButton = (
+    <Button
+      color='primary'
+      onClick={() => {
+        onAddScancodePressed?.();
+      }}
+    >
+      Add
+    </Button>
+  );
+
   return (
     <Box style={{ display: 'flex', flexDirection: 'row' }}>
-      {scancodes.map((sc, i) => {
-        const label = labels[sc.toLowerCase()];
-        const text = label ? `${sc}:${label}` : sc;
-        return (
-          <Chip
-            label={text}
-            key={`scancode-chip-${i}`}
-            onDelete={() => {
-              // Call onChange with an array of scancodes that doesn't have the
-              // element at index i.
-              const newScancodes = scancodes
-                .slice(0, i)
-                .concat(scancodes.slice(i + 1));
-              onChange(newScancodes);
-            }}
-            style={{ marginLeft: 5, marginRight: 5 }}
-          />
-        );
-      })}
+      {scancodes
+        .map((sc, i) => {
+          const label = labels[sc.toLowerCase()];
+          const text = label ? `${sc} (${label})` : sc;
+          return (
+            <Chip
+              label={text}
+              key={`scancode-chip-${i}`}
+              onDelete={() => {
+                // Call onChange with an array of scancodes that doesn't have the
+                // element at index i.
+                const newScancodes = scancodes
+                  .slice(0, i)
+                  .concat(scancodes.slice(i + 1));
+                onChange(newScancodes);
+              }}
+              style={{ marginLeft: 5, marginRight: 5 }}
+            />
+          );
+        })
+        // Add this item after the chips
+        .concat([addButton])}
     </Box>
   );
 };
