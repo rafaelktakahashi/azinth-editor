@@ -83,6 +83,46 @@ export default class KeyboardView extends React.Component<Props, State> {
     return -1;
   }
 
+  // Update the keyboard's modifiers. Some layers may be changed.
+  updateModifiers(modifiers: KeyboardModifier[]) {
+    // Get both old and new modifiers.
+    const prevModifiers = this.props.keyboard.modifiers;
+    const nextModifiers = modifiers;
+
+    let newLayers = this.props.keyboard.layers;
+    // Loop through the old modifiers to find any that has been removed.
+    for (let i = 0; i < prevModifiers.length; i++) {
+      const prevMod = prevModifiers[i];
+      // We don't expect so many modifiers to exist as to make this slow.
+      const stillExists =
+        nextModifiers.findIndex(
+          (it) => it.name.localeCompare(prevMod.name) == 0
+        ) != -1;
+      if (!stillExists) {
+        // Then, the special handling happens here; we need to remove all layers
+        // that use the deleted modifier.
+        newLayers = newLayers.filter(
+          (l) => !l.modifiers.some((m) => m.localeCompare(prevMod.name) == 0)
+        );
+      }
+    }
+
+    // Set the new modifiers, and also set the new layers in case it changed.
+    this.props.onKeyboardChanged(
+      {
+        ...this.props.keyboard,
+        modifiers: modifiers,
+        layers: newLayers,
+      },
+      'modifier'
+    );
+  }
+
+  // TODO: We'll eventually need a different method for changing a modifier's
+  // name. We'll have to look through the existing layers to update them.
+  // Might be more doable to simply add an 'alias' and use a uuid or something
+  // for the modifier names.
+
   // Assign a new keystroke command to the key of specified scancode in the
   // currently selected layer. The remap is saved to the keyboard object.
   replaceCommand(scancode: Scancode, command: KeystrokeCommand) {
@@ -216,8 +256,13 @@ export default class KeyboardView extends React.Component<Props, State> {
                 });
               }}
               onEditClicked={() => {
-                // TODO: Get the result of this modal.
-                this.modifiersModal?.openModal(this.props.keyboard);
+                this.modifiersModal
+                  ?.openModal(this.props.keyboard)
+                  ?.then((response) => {
+                    if (response.changed) {
+                      this.updateModifiers(response.newModifiers);
+                    }
+                  });
               }}
             />
           </Grid>
@@ -230,8 +275,7 @@ export default class KeyboardView extends React.Component<Props, State> {
             this.remapKeyModal
               ?.openModal(scancode, command, this.props.keyboard.logicalLayout)
               ?.then((response) => {
-                // TODO: Locate the selected layer and update it. Probably do
-                // that in a separate method.
+                this.replaceCommand(scancode, response.command);
               });
           }}
         />

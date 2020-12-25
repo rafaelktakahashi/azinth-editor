@@ -9,6 +9,7 @@ import {
   TableCell,
   TableBody,
   TableRow,
+  Divider,
   Box,
   Chip,
   Button,
@@ -21,7 +22,7 @@ import {
   LogicalLayout,
   getLogicalLayout,
 } from '../../resources/logicalLayouts';
-import { Add as AddIcon } from '@material-ui/icons';
+import { Add as AddIcon, Check as CheckIcon } from '@material-ui/icons';
 import ModifiersNewModifierModal from './ModifiersNewModifierModal';
 import ModifiersNewScancodeModal from './ModifiersNewScancodeModal';
 
@@ -202,6 +203,17 @@ export default class ModifiersModal extends React.Component<{}, State> {
               </TableBody>
             </Table>
           </TableContainer>
+          <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+          <Button
+            variant='contained'
+            color='primary'
+            endIcon={<CheckIcon />}
+            onClick={() => {
+              this.closeModal();
+            }}
+          >
+            Save changes
+          </Button>
         </ModalContainer>
       </Modal>
     );
