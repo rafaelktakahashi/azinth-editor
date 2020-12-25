@@ -12,12 +12,15 @@ import {
 } from '../../resources/logicalLayouts/index';
 import ChangeLayoutModal from '../modal/ChangeLayoutModal';
 import KeystrokeCommand from '../../model/KeystrokeCommand';
+import Scancode from '../../model/Scancode';
 
 interface Props {
   physicalLayout: PhysicalLayout;
   logicalLayout: LogicalLayout;
   // Use null for an empty layer (a layer with no registered remaps).
   remaps: KeystrokeCommand[] | null;
+  // Callback for when a key is clicked on the on-screen keyboard.
+  onKeyClicked: (scancode: Scancode, command?: KeystrokeCommand) => void;
 }
 
 interface State {
@@ -104,6 +107,10 @@ export default class LayerView extends React.Component<Props, State> {
               const commandIndex = this.props.remaps?.findIndex(
                 (remap) => remap.scancode === scancode
               );
+              const command =
+                commandIndex === -1 || commandIndex === undefined
+                  ? undefined
+                  : this.props.remaps?.[commandIndex];
               return (
                 <KeyView
                   key={`keyview-${index}`}
@@ -112,11 +119,10 @@ export default class LayerView extends React.Component<Props, State> {
                   xOffset={key.xOffset}
                   yOffset={key.yOffset}
                   bottomLabel={this.state.currentLogicalLayout.labels[scancode]}
-                  keyCommand={
-                    commandIndex === -1 || commandIndex === undefined
-                      ? undefined
-                      : this.props.remaps?.[commandIndex]
-                  }
+                  keyCommand={command}
+                  onClick={() => {
+                    this.props.onKeyClicked?.(scancode, command);
+                  }}
                 />
               );
             }

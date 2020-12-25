@@ -8,6 +8,9 @@ import ModifierListView from './ModifierListView';
 import KeyboardModifier from '../../model/KeyboardModifier';
 import Layer from '../../model/Layer';
 import ModifiersModal from '../modal/ModifiersModal';
+import RemapKeyModal from '../modal/RemapKeyModal';
+import Scancode from '../../model/Scancode';
+import KeystrokeCommand from '../../model/KeystrokeCommand';
 
 interface Props {
   keyboard: Keyboard;
@@ -42,6 +45,8 @@ export default class KeyboardView extends React.Component<Props, State> {
   changeLayoutModal: ChangeLayoutModal | null = null;
   // Reference to a modal for editing modifiers
   modifiersModal: ModifiersModal | null = null;
+  // Reference to a modal for editing commands
+  remapKeyModal: RemapKeyModal | null = null;
 
   /**
    * Finds the layer corresponding to the modifier combination, and returns its
@@ -78,6 +83,71 @@ export default class KeyboardView extends React.Component<Props, State> {
     return -1;
   }
 
+  // Assign a new keystroke command to the key of specified scancode in the
+  // currently selected layer. The remap is saved to the keyboard object.
+  replaceCommand(scancode: Scancode, command: KeystrokeCommand) {
+    // First, find the selected layer's index.
+    const selectedLayerIndex = this.layerIndexFromModifiers(
+      this.state.selectedModifiers
+    );
+    if (selectedLayerIndex == -1) {
+      // This may be an empty layer, in which case we must instantiate a new
+      // layer with just this remap and add it to the keyboard.
+      const newLayer: Layer = {
+        // New alias is "Neutral layer" if it's activated by pressing down no
+        // modifiers, and it's a list of the modifiers' names otherwise.
+        alias:
+          this.state.selectedModifiers.length == 0
+            ? 'Neutral layer'
+            : this.state.selectedModifiers.map((mod) => mod.name).join(' + '),
+        modifiers: this.state.selectedModifiers.map((mod) => mod.name),
+        remaps: [command],
+      };
+      // Now make the new keyboard that simply has this added layer in it.
+      const newKeyboard: Keyboard = {
+        ...this.props.keyboard,
+        layers: this.props.keyboard.layers.concat(newLayer),
+      };
+      this.props.onKeyboardChanged?.(newKeyboard, 'command');
+    } else {
+      // Create a copy of the layer, except that it has the new command at the
+      // specified scancode.
+      // This is a little complicated because scancodes aren't indexes of an
+      // object; the commands exist in a list, and the scancodes are a field in
+      // each command. Thus, we must look for a command with the same scancode
+      // and replace it if it exists.
+      const existingLayer = this.props.keyboard.layers[selectedLayerIndex];
+      const existingCommands: KeystrokeCommand[] = existingLayer.remaps;
+      const existingRemapIndex = existingCommands.findIndex(
+        (it) => it.scancode.localeCompare(scancode) == 0
+      );
+      let newCommands: KeystrokeCommand[];
+      if (existingRemapIndex == -1) {
+        // Append to the old list.
+        newCommands = [...existingCommands].concat(command);
+      } else {
+        // Replace the item with the same scancode.
+        newCommands = [...existingCommands];
+        newCommands[existingRemapIndex] = command;
+      }
+      // Make the new array of layers; it's the same as the old one, except that
+      // it has the new array of commands.
+      const newLayer: Layer = {
+        ...existingLayer,
+        remaps: newCommands,
+      };
+      const newLayerArray: Layer[] = [...this.props.keyboard.layers];
+      newLayerArray[selectedLayerIndex] = newLayer;
+      // Make the new keyboard; it's the same as the old one, except that it has
+      // the new layer.
+      const newKeyboard: Keyboard = {
+        ...this.props.keyboard,
+        layers: newLayerArray,
+      };
+      this.props.onKeyboardChanged?.(newKeyboard, 'command');
+    }
+  }
+
   render(): JSX.Element {
     const selectedLayerIndex = this.layerIndexFromModifiers(
       this.state.selectedModifiers
@@ -98,6 +168,7 @@ export default class KeyboardView extends React.Component<Props, State> {
       >
         <ChangeLayoutModal ref={(r) => (this.changeLayoutModal = r)} />
         <ModifiersModal ref={(r) => (this.modifiersModal = r)} />
+        <RemapKeyModal ref={(r) => (this.remapKeyModal = r)} />
         <Grid container style={{ flexGrow: 0 }}>
           <Grid item xs={10}>
             <KeyboardTitle
@@ -120,7 +191,7 @@ export default class KeyboardView extends React.Component<Props, State> {
                       this.props.keyboard.physicalLayout,
                       this.props.keyboard.logicalLayout
                     )
-                    .then((r) => {
+                    ?.then((r) => {
                       const newKeyboard: Keyboard = {
                         ...this.props.keyboard,
                         logicalLayout: r.selectedLogicalLayout,
@@ -128,7 +199,7 @@ export default class KeyboardView extends React.Component<Props, State> {
                       };
                       this.props.onKeyboardChanged(newKeyboard, 'layout');
                     })
-                    .catch((e) => {
+                    ?.catch((e) => {
                       console.warn(`Error: ${e.message || e}`);
                     });
                 }}
@@ -155,6 +226,14 @@ export default class KeyboardView extends React.Component<Props, State> {
           physicalLayout={this.props.keyboard.physicalLayout}
           logicalLayout={this.props.keyboard.logicalLayout}
           remaps={selectedLayer !== null ? selectedLayer.remaps : null}
+          onKeyClicked={(scancode, command) => {
+            this.remapKeyModal
+              ?.openModal(scancode, command, this.props.keyboard.logicalLayout)
+              ?.then((response) => {
+                // TODO: Locate the selected layer and update it. Probably do
+                // that in a separate method.
+              });
+          }}
         />
       </Paper>
     );

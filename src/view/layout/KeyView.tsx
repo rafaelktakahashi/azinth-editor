@@ -18,6 +18,7 @@ interface Props {
   yOffset: number;
   keyCommand?: KeystrokeCommand;
   bottomLabel: string;
+  onClick: () => void;
 }
 
 /**
@@ -88,6 +89,7 @@ export default class KeyView extends React.Component<Props> {
               justifyItems: 'center',
               justifyContent: 'center',
             }}
+            onClick={this.props.onClick}
           >
             <Typography
               style={{
