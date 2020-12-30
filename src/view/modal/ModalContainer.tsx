@@ -16,24 +16,28 @@ const ModalContainer = styled(Container)`
   max-width: 700;
 `;
 
-const ModalPaper = styled(Paper)`
+const ModalPaper = styled(Paper)<{
+  clear?: boolean;
+}>`
   background-color: white;
-  padding: 15px 25px;
+  padding: ${(props) => (props.clear ? '0px' : '15px 25px')};
 `;
 
 export default ({
   title,
   onClose,
   maxWidth,
+  clear,
   children,
 }: {
-  title: string;
+  title?: string;
   onClose?: () => void;
   maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  clear?: boolean;
   children: JSX.Element | JSX.Element[];
 }) => (
   <ModalContainer maxWidth={maxWidth || 'sm'}>
-    <ModalPaper>
+    <ModalPaper clear={clear}>
       <Box
         style={{
           display: 'flex',
@@ -43,16 +47,20 @@ export default ({
           alignContent: 'middle',
         }}
       >
-        <Typography variant='h2' color='primary' style={{ marginBottom: 15 }}>
-          {title}
-        </Typography>
-        <IconButton
-          onClick={() => {
-            onClose?.();
-          }}
-        >
-          <Close />
-        </IconButton>
+        {!clear && (
+          <Typography variant='h2' color='primary' style={{ marginBottom: 15 }}>
+            {title || ''}
+          </Typography>
+        )}
+        {!clear && (
+          <IconButton
+            onClick={() => {
+              onClose?.();
+            }}
+          >
+            <Close />
+          </IconButton>
+        )}
       </Box>
       {children}
     </ModalPaper>

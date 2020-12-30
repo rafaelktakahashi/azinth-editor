@@ -20,6 +20,7 @@ import {
   AppBar,
   Tabs,
   Tab,
+  IconButton,
 } from '@material-ui/core';
 import ModalContainer from './ModalContainer';
 import KeyboardModifier from '../../model/KeyboardModifier';
@@ -42,6 +43,7 @@ import DeadKeyCommand, {
   Replacement,
 } from '../../model/KeystrokeCommands/DeadKeyCommand';
 import ExecutableCommand from '../../model/KeystrokeCommands/ExecutableCommand';
+import { Close } from '@material-ui/icons';
 
 function TabPanel(props: {
   children: React.ReactNode;
@@ -219,18 +221,50 @@ export default class RemapKeyModal extends React.Component<Props, State> {
         onClose={(_, reason) => this.closeModal(reason)}
       >
         <ModalContainer
-          title='Edit Command'
+          maxWidth='md'
+          title='Modifiers'
+          clear
           onClose={() => {
             this.closeModal('closeButton');
           }}
         >
-          <AppBar position='static'>
+          <AppBar
+            position='static'
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+          >
             <Tabs value={this.state.currentTab}>
-              <Tab label='Unicode' />
-              <Tab label='Macro' />
-              <Tab label='Dead key' />
-              <Tab label='Executable' />
+              <Tab
+                label='Unicode'
+                onClick={(_) => {
+                  this.setState({ currentTab: 0 });
+                }}
+              />
+              <Tab
+                label='Macro'
+                onClick={(_) => {
+                  this.setState({ currentTab: 1 });
+                }}
+              />
+              <Tab
+                label='Dead key'
+                onClick={(_) => {
+                  this.setState({ currentTab: 2 });
+                }}
+              />
+              <Tab
+                label='Executable'
+                onClick={(_) => {
+                  this.setState({ currentTab: 3 });
+                }}
+              />
             </Tabs>
+            <IconButton
+              onClick={() => {
+                this.closeModal();
+              }}
+            >
+              <Close style={{ color: 'white' }} />
+            </IconButton>
           </AppBar>
           <TabPanel value={this.state.currentTab} index={0}>
             <Typography>Unicode tab content</Typography>
