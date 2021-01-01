@@ -9,20 +9,21 @@ import {
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
-const ModalContainer = styled(Container)`
-  background-color: transparent;
-  outline: 0;
-  margin: 32px auto;
-  max-width: 700;
-`;
-
-const ModalPaper = styled(Paper)<{
+const ModalContainer = styled(Container)<{
   clear?: boolean;
 }>`
   background-color: white;
-  padding: ${(props) => (props.clear ? '0px' : '15px 25px')};
+  outline: 0;
+  margin: 16px auto;
+  padding: ${(props) => (props.clear ? '16px' : '0px')};
+  max-width: 800px;
+  max-height: 550px; // The parent of this seems to have infinite height (?)
 `;
 
+/**
+ * This should be used to encapsulate all content inside of a modal. This tries
+ * its best to behave like a modal window.
+ */
 export default ({
   title,
   onClose,
@@ -37,7 +38,7 @@ export default ({
   children: JSX.Element | JSX.Element[];
 }) => (
   <ModalContainer maxWidth={maxWidth || 'sm'}>
-    <ModalPaper clear={clear}>
+    {!clear && (
       <Box
         style={{
           display: 'flex',
@@ -47,22 +48,18 @@ export default ({
           alignContent: 'middle',
         }}
       >
-        {!clear && (
-          <Typography variant='h2' color='primary' style={{ marginBottom: 15 }}>
-            {title || ''}
-          </Typography>
-        )}
-        {!clear && (
-          <IconButton
-            onClick={() => {
-              onClose?.();
-            }}
-          >
-            <Close />
-          </IconButton>
-        )}
+        <Typography variant='h2' color='primary' style={{ marginBottom: 15 }}>
+          {title || ''}
+        </Typography>
+        <IconButton
+          onClick={() => {
+            onClose?.();
+          }}
+        >
+          <Close />
+        </IconButton>
       </Box>
-      {children}
-    </ModalPaper>
+    )}
+    {children}
   </ModalContainer>
 );

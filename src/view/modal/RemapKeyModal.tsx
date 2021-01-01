@@ -2,25 +2,30 @@ import * as React from 'react';
 import {
   Modal,
   Typography,
-  Table,
-  Paper,
-  TableContainer,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableRow,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
   Box,
-  Chip,
-  Button,
-  Input,
+  Card,
+  CardContent,
   TextField,
   Grid,
-  Select,
-  MenuItem,
   AppBar,
   Tabs,
   Tab,
   IconButton,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Checkbox,
+  FormControlLabel,
+  Paper,
+  TablePagination,
+  Divider,
+  Button,
 } from '@material-ui/core';
 import ModalContainer from './ModalContainer';
 import KeyboardModifier from '../../model/KeyboardModifier';
@@ -44,6 +49,22 @@ import DeadKeyCommand, {
 } from '../../model/KeystrokeCommands/DeadKeyCommand';
 import ExecutableCommand from '../../model/KeystrokeCommands/ExecutableCommand';
 import { Close } from '@material-ui/icons';
+
+interface UnicodeData {
+  symbol: string;
+  codepoint: number; // 32-bit unsigned integer
+  category: string; // Unicode's general category
+}
+
+function codepointsFromText(text: string): number[] {
+  return Array.from(text)
+    .map((char) => char.codePointAt(0) || -1)
+    .filter((cp) => cp > 0);
+}
+
+function textFromCodepoints(codepoints: number[]): string {
+  return String.fromCodePoint(...codepoints);
+}
 
 function TabPanel(props: {
   children: React.ReactNode;
@@ -74,9 +95,13 @@ type RemapKeyModalResponse = { command: KeystrokeCommand };
 const initialState = {
   open: false,
   currentTab: 0,
-  unicodeCodepoints: [],
+  unicodeText: '',
+  unicodeDataArray: [],
+  unicodeSelectedCharacterIndex: -1,
+  unicodeTriggerOnRepeat: true,
   macroKeypresses: [],
-  deadKeyIndependentCodepoints: [],
+  macroTriggerOnRepeat: false,
+  deadKeyIndependentText: '',
   deadKeySubstitutions: [],
   executableFilename: '',
   executableArguments: '',
@@ -84,6 +109,8 @@ const initialState = {
 };
 
 interface Props {}
+
+// TODO: Get unicharadata to implement the unicode data array.
 
 interface State {
   open: boolean;
@@ -93,11 +120,15 @@ interface State {
   // 3: Executable command.
   currentTab: number;
   // State for the unicode tab:
-  unicodeCodepoints: number[];
+  unicodeText: string;
+  unicodeDataArray: UnicodeData[]; // <- Reflect the input text
+  unicodeSelectedCharacterIndex: number; // <- Use -1 for none selected.
+  unicodeTriggerOnRepeat: boolean;
   // State for the macro tab:
   macroKeypresses: VirtualKeypress[];
+  macroTriggerOnRepeat: boolean;
   // State for the dead key tab:
-  deadKeyIndependentCodepoints: number[];
+  deadKeyIndependentText: string;
   deadKeySubstitutions: Replacement[];
   // State for the executable tab:
   executableFilename: string;
@@ -163,7 +194,10 @@ export default class RemapKeyModal extends React.Component<Props, State> {
       // first tab.
       return {
         ...initialState,
-        unicodeCodepoints: (command as UnicodeCommand).codepoints,
+        unicodeText: textFromCodepoints((command as UnicodeCommand).codepoints),
+        unicodeDataArray: this.dataArrayFromCodepoints(
+          (command as UnicodeCommand).codepoints
+        ),
         currentTab: 0,
       };
     } else if (command.type == 'macro') {
@@ -179,7 +213,9 @@ export default class RemapKeyModal extends React.Component<Props, State> {
       // substitution map, and set the third tab.
       return {
         ...initialState,
-        deadKeyIndependentCodepoints: (command as DeadKeyCommand).codepoints,
+        deadKeyIndependentText: textFromCodepoints(
+          (command as DeadKeyCommand).codepoints
+        ),
         deadKeySubstitutions: (command as DeadKeyCommand).replacements,
         currentTab: 2,
       };
@@ -214,6 +250,49 @@ export default class RemapKeyModal extends React.Component<Props, State> {
     );
   }
 
+  _updateUnicodeDataArrayTimer?: number; // Handler for a setTimeout.
+
+  /**
+   * Don't call this directly from the components; this is used during
+   * initialization, and also called by updateUnicodeDataArray. Call that
+   * method from the components instead.
+   */
+  dataArrayFromCodepoints(codepoints: number[]): UnicodeData[] {
+    return codepoints.map((codepoint) => ({
+      symbol: '*',
+      codepoint: codepoint,
+      category: 'Placeholder', // TODO!
+    }));
+  }
+
+  /**
+   * This will wait for a short interval, and then update the unicode data array
+   * in the state to reflect the text.
+   * @param text New text inserted in the textbox.
+   */
+  updateUnicodeDataArray(text: string): void {
+    // Trying to clear an invalid id silently fails and does nothing.
+    clearTimeout(this._updateUnicodeDataArrayTimer);
+    // The new timeout defines the real bulk of the work, which is done after a
+    // delay.
+    this._updateUnicodeDataArrayTimer = setTimeout(() => {
+      // Read the state to get the unicode text, then turn it into codepoints.
+      // Each codepoint will get its entry in the data array.
+      const codepoints = codepointsFromText(text);
+      this.setState({
+        unicodeDataArray: this.dataArrayFromCodepoints(codepoints),
+      });
+    }, 800);
+  }
+
+  handleUnicodeTextChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    this.setState({
+      unicodeText: e.target.value,
+    });
+
+    this.updateUnicodeDataArray(e.target.value);
+  }
+
   render(): JSX.Element {
     return (
       <Modal
@@ -228,58 +307,180 @@ export default class RemapKeyModal extends React.Component<Props, State> {
             this.closeModal('closeButton');
           }}
         >
-          <AppBar
-            position='static'
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              flexDirection: 'column',
+              height: 450,
+            }}
           >
-            <Tabs value={this.state.currentTab}>
-              <Tab
-                label='Unicode'
-                onClick={(_) => {
-                  this.setState({ currentTab: 0 });
-                }}
-              />
-              <Tab
-                label='Macro'
-                onClick={(_) => {
-                  this.setState({ currentTab: 1 });
-                }}
-              />
-              <Tab
-                label='Dead key'
-                onClick={(_) => {
-                  this.setState({ currentTab: 2 });
-                }}
-              />
-              <Tab
-                label='Executable'
-                onClick={(_) => {
-                  this.setState({ currentTab: 3 });
-                }}
-              />
-            </Tabs>
-            <IconButton
-              onClick={() => {
-                this.closeModal();
+            <AppBar
+              position='static'
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                flex: 0,
               }}
             >
-              <Close style={{ color: 'white' }} />
-            </IconButton>
-          </AppBar>
-          <TabPanel value={this.state.currentTab} index={0}>
-            <Typography>Unicode tab content</Typography>
-          </TabPanel>
-          <TabPanel value={this.state.currentTab} index={1}>
-            <Typography>Macro tab content</Typography>
-          </TabPanel>
-          <TabPanel value={this.state.currentTab} index={2}>
-            <Typography>Dead key tab content</Typography>
-          </TabPanel>
-          <TabPanel value={this.state.currentTab} index={3}>
-            <Typography>Executable tab content</Typography>
-          </TabPanel>
+              <Tabs value={this.state.currentTab}>
+                <Tab
+                  label='Unicode'
+                  onClick={(_) => {
+                    this.setState({ currentTab: 0 });
+                  }}
+                />
+                <Tab
+                  label='Macro'
+                  onClick={(_) => {
+                    this.setState({ currentTab: 1 });
+                  }}
+                />
+                <Tab
+                  label='Dead key'
+                  onClick={(_) => {
+                    this.setState({ currentTab: 2 });
+                  }}
+                />
+                <Tab
+                  label='Executable'
+                  onClick={(_) => {
+                    this.setState({ currentTab: 3 });
+                  }}
+                />
+              </Tabs>
+              <IconButton
+                onClick={() => {
+                  this.closeModal();
+                }}
+              >
+                <Close style={{ color: 'white' }} />
+              </IconButton>
+            </AppBar>
+            <div style={{ flexGrow: 1 }}>
+              <TabPanel value={this.state.currentTab} index={0}>
+                <Grid container spacing={4} style={{ height: '100%' }}>
+                  <Grid item xs={12}>
+                    <TextField
+                      style={{ width: '100%' }}
+                      value={this.state.unicodeText}
+                      multiline
+                      variant='outlined'
+                      title='Text'
+                      rows='3'
+                      placeholder='Insert one or more characters'
+                      onChange={this.handleUnicodeTextChange.bind(this)}
+                    />
+                  </Grid>
+                  {/* List of characters, displaying letters and codepoints. */}
+                  <Grid item xs={5}>
+                    <_UnicodeCharacterList
+                      rows={this.state.unicodeDataArray}
+                      selectedIndex={this.state.unicodeSelectedCharacterIndex}
+                      onRowSelected={(index) => {
+                        this.setState({
+                          unicodeSelectedCharacterIndex: index,
+                        });
+                      }}
+                    />
+                  </Grid>
+                  {/* Details on the selected character. */}
+                  <Grid item xs={7}>
+                    <_UnicodeCharacterDetails
+                      data={
+                        this.state.unicodeDataArray[
+                          this.state.unicodeSelectedCharacterIndex
+                        ]
+                      }
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          value={this.state.unicodeTriggerOnRepeat}
+                          onChange={(e) => {
+                            this.setState({
+                              unicodeTriggerOnRepeat: e.target.checked,
+                            });
+                          }}
+                        />
+                      }
+                      label='Trigger repeatedly while pressed down'
+                    />
+                  </Grid>
+                </Grid>
+              </TabPanel>
+              <TabPanel value={this.state.currentTab} index={1}>
+                <Typography>Macro tab content</Typography>
+              </TabPanel>
+              <TabPanel value={this.state.currentTab} index={2}>
+                <Typography>Dead key tab content</Typography>
+              </TabPanel>
+              <TabPanel value={this.state.currentTab} index={3}>
+                <Typography>Executable tab content</Typography>
+              </TabPanel>
+            </div>
+            <Divider />
+            <Button color='primary'>Assign</Button>
+          </div>
         </ModalContainer>
       </Modal>
     );
   }
 }
+
+const _UnicodeCharacterList = ({
+  rows,
+  selectedIndex,
+  onRowSelected,
+}: {
+  rows: UnicodeData[];
+  selectedIndex: number;
+  onRowSelected: (n: number) => void;
+}) => {
+  return (
+    <Paper style={{ height: 190, overflowY: 'scroll' }}>
+      <TableContainer>
+        <Table size='small'>
+          <TableBody>
+            {rows.map((row, index) => (
+              <TableRow
+                selected={index == selectedIndex}
+                onClick={(_) => onRowSelected(index)}
+              >
+                <TableCell align='left'>{row.symbol}</TableCell>
+                <TableCell align='right'>{`U+${row.codepoint.toString(
+                  16
+                )}`}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
+  );
+};
+
+const _UnicodeCharacterDetails = ({ data }: { data?: UnicodeData }) => {
+  if (!data) {
+    data = {
+      symbol: '',
+      category: '-',
+      codepoint: -1,
+    };
+  }
+
+  return (
+    <Card>
+      <CardContent>
+        <Typography variant='h1' style={{ height: 30 }}>
+          {data.symbol}
+        </Typography>
+        <Typography>
+          Codepoint:{' '}
+          {data.codepoint > 0 ? `U+${data.codepoint.toString(16)}` : '-'}
+        </Typography>
+        <Typography>Category: {data.category}</Typography>
+      </CardContent>
+    </Card>
+  );
+};
